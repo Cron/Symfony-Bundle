@@ -5,12 +5,12 @@ namespace Cron\CronBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CronJob
+ * CronReport
  *
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="un_name", columns={"name"})})
- * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronJobRepository")
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronReportRepository")
  */
-class CronJob
+class CronReport
 {
     /**
      * @var integer
@@ -22,45 +22,35 @@ class CronJob
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(type="datetime")
+     * @var \DateTime $runAt
      */
-    private $name;
+    protected $runAt;
+    /**
+     * @ORM\Column(type="float")
+     * @var float $runTime
+     */
+    protected $runTime;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="command", type="string", length=255)
+     * @ORM\Column(type="integer")
+     * @var integer $result
      */
-    private $command;
+    protected $exitCode;
+    /**
+     * @ORM\Column(type="text")
+     * @var string $output
+     */
+    protected $output;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="schedule", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="CronJob", inversedBy="reports")
+     * @var CronJob
      */
-    private $schedule;
+    protected $job;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255)
-     */
-    private $description;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="enabled", type="boolean")
-     */
-    private $enabled;
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -68,103 +58,82 @@ class CronJob
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
+     * @param CronJob $job
+     */
+    public function setJob($job)
+    {
+        $this->job = $job;
+    }
+
+    /**
      * @return CronJob
      */
-    public function setName($name)
+    public function getJob()
     {
-        $this->name = $name;
-
-        return $this;
+        return $this->job;
     }
 
     /**
-     * Get name
-     *
-     * @return string 
+     * @param string $output
      */
-    public function getName()
+    public function setOutput($output)
     {
-        return $this->name;
-    }
-
-    /**
-     * @param string $command
-     */
-    public function setCommand($command)
-    {
-        $this->command = $command;
+        $this->output = $output;
     }
 
     /**
      * @return string
      */
-    public function getCommand()
+    public function getOutput()
     {
-        return $this->command;
+        return $this->output;
     }
 
     /**
-     * @param string $schedule
+     * @param int $exitCode
      */
-    public function setSchedule($schedule)
+    public function setExitCode($exitCode)
     {
-        $this->schedule = $schedule;
+        $this->exitCode = $exitCode;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getSchedule()
+    public function getExitCode()
     {
-        return $this->schedule;
+        return $this->exitCode;
     }
 
     /**
-     * Set description
-     *
-     * @param string $description
-     * @return CronJob
+     * @param \DateTime $runAt
      */
-    public function setDescription($description)
+    public function setRunAt($runAt)
     {
-        $this->description = $description;
-
-        return $this;
+        $this->runAt = $runAt;
     }
 
     /**
-     * Get description
-     *
-     * @return string 
+     * @return \DateTime
      */
-    public function getDescription()
+    public function getRunAt()
     {
-        return $this->description;
+        return $this->runAt;
     }
 
     /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return CronJob
+     * @param float $runTime
      */
-    public function setEnabled($enabled)
+    public function setRunTime($runTime)
     {
-        $this->enabled = $enabled;
-
-        return $this;
+        $this->runTime = $runTime;
     }
 
     /**
-     * Get enabled
-     *
-     * @return boolean 
+     * @return float
      */
-    public function getEnabled()
+    public function getRunTime()
     {
-        return $this->enabled;
+        return $this->runTime;
     }
 }

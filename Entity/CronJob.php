@@ -3,6 +3,7 @@
 namespace Cron\CronBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * CronJob
@@ -56,6 +57,16 @@ class CronJob
      */
     private $enabled;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CronReport", mappedBy="job", cascade={"remove"})
+     * @var ArrayCollection
+     */
+    protected $reports;
+
+    public function __construct()
+    {
+        $this->reports = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -166,5 +177,13 @@ class CronJob
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getReports()
+    {
+        return $this->reports;
     }
 }
