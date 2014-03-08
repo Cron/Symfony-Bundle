@@ -3,7 +3,8 @@ Cron Bundle
 
 Cron integration for symfony.
 
-## Installation
+Installation
+------------
 
 Installing this bundle can be done through these simple steps:
 
@@ -50,6 +51,47 @@ Installing this bundle can be done through these simple steps:
   app/console cron:list
   app/console cron:run
   ```
+
+Available commands
+------------------
+
+### list
+```shell
+app/console cron:list
+```
+Show a list of all jobs. Job names are show with ```[x]``` if they are enabled and ```[ ]``` otherwise.
+
+### create
+```shell
+app/console cron:create
+```
+Create a new job.
+
+### delete
+```shell
+app/console cron:delete _jobName_
+```
+Delete a job. For your own protection, the job must be disabled first.
+
+### enable
+```shell
+app/console cron:enable _jobName_
+```
+Enable a job.
+
+### disable
+```shell
+app/console cron:disable _jobName_
+```
+Disable a job.
+
+### run
+```shell
+app/console cron:run [--force] [job]
+```
+Run the cron.
+If a job is given only this will be triggered.
+You can trigger a specific job that is disabled by using _--force_.
 
 Contributing
 ------------
