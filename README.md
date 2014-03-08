@@ -26,7 +26,7 @@ Installing this bundle can be done through these simple steps:
 
 3. Add the bundle to your application kernel:
   ```php
-  // application/ApplicationKernel.php
+  // app/AppKernel.php
   public function registerBundles()
   {
   	// ...
