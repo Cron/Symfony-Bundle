@@ -36,32 +36,51 @@ class CronCreateCommand extends ContainerAwareCommand
     {
         $job = new CronJob();
 
+        $output->writeln('');
+        $output->writeln('<question>Name</question>');
+        $output->writeln('<info>The unique name how the job will be referenced.</info>');
         $job->setName($this->getDialogHelper()->askAndValidate(
             $output,
-            '<question>Name</question>: ',
+            ': ',
             function($input) { return $this->validateJobName($input); },
             false
         ));
+
+        $output->writeln('');
+        $output->writeln('<question>Command</question>');
+        $output->writeln('<info>The command to execute. You may add extra arguments.</info>');
         $job->setCommand($this->getDialogHelper()->askAndValidate(
             $output,
-            '<question>Command</question>: ',
+            ': ',
             function($input) { return $this->validateCommand($input); },
             false
         ));
+
+        $output->writeln('');
+        $output->writeln('<question>Schedule</question>');
+        $output->writeln('<info>The schedule in the crontab syntax.</info>');
         $job->setSchedule($this->getDialogHelper()->askAndValidate(
             $output,
-            '<question>Schedule</question>: ',
+            ': ',
             function($input) { return $this->validateSchedule($input); },
             false
         ));
+
+        $output->writeln('');
+        $output->writeln('<question>Description</question>');
+        $output->writeln('<info>Some more information about the job.</info>');
         $job->setDescription($this->getDialogHelper()->askAndValidate(
             $output,
             '<question>Description</question>: ',
             function($input) { return (string) $input; }
         ));
+
+        $output->writeln('');
+        $output->writeln('<question>Enable</question>');
+        $output->writeln('<info>Should the cron be enabled.</info>');
         $job->setEnabled($this->getDialogHelper()->askConfirmation(
                 $output,
-                '<question>Enable the job</question> [Y/n]: ',
+                '[Y/n]: ',
                 true
             ));
 
@@ -69,6 +88,7 @@ class CronCreateCommand extends ContainerAwareCommand
         $em->persist($job);
         $em->flush();
 
+        $output->writeln('');
         $output->writeln(sprintf('<info>Cron "%s" was created..</info>', $job->getName()));
     }
 
@@ -101,7 +121,8 @@ class CronCreateCommand extends ContainerAwareCommand
      */
     protected function validateCommand($command)
     {
-        $this->getApplication()->get($command);
+        $parts = explode(' ', $command);
+        $this->getApplication()->get((string)$parts[0]);
 
         return $command;
     }
