@@ -8,48 +8,48 @@ Cron integration for symfony.
 Installing this bundle can be done through these simple steps:
 
 1. Add the bundle to your project as a composer dependency:
-```javascript
-// composer.json
-{
-    // ...
-    require: {
-        // ...
-        "cron/cron-bundle": "1.0.*"
-    }
-}
-```
+  ```javascript
+  // composer.json
+  {
+      // ...
+      require: {
+          // ...
+          "cron/cron-bundle": "1.0.*"
+      }
+  }
+  ```
 
 2. Update your composer installation:
-```shell
-composer update
-````
+  ```shell
+  composer update
+  ````
 
 3. Add the bundle to your application kernel:
-```php
-// application/ApplicationKernel.php
-public function registerBundles()
-{
-	// ...
-	$bundle = array(
-		// ...
-        new Cron\CronBundle\CronCronBundle(),
-	);
-    // ...
-
-    return $bundles;
-}
-```
+  ```php
+  // application/ApplicationKernel.php
+  public function registerBundles()
+  {
+  	// ...
+  	$bundle = array(
+  		// ...
+          new Cron\CronBundle\CronCronBundle(),
+	  );
+      // ...
+  
+      return $bundles;
+  }
+  ```
 
 4. Update your DB schema
-```shell
-app/console doctrine:schema:update
-```
+  ```shell
+  app/console doctrine:schema:update
+  ```
 
-4. Start using the bundle:
-```shell
-app/console cron:list
-app/console cron:run
-```
+5. Start using the bundle:
+  ```shell
+  app/console cron:list
+  app/console cron:run
+  ```
 
 Contributing
 ------------
