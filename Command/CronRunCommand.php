@@ -23,7 +23,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
- */ 
+ */
 class CronRunCommand extends ContainerAwareCommand
 {
     /**
@@ -54,7 +54,7 @@ class CronRunCommand extends ContainerAwareCommand
         $time = microtime(true);
         $dbReport = $cron->run();
 
-        while($cron->isRunning()) {}
+        while ($cron->isRunning()) {}
 
         $output->writeln('time: ' . (microtime(true) - $time));
 
@@ -63,8 +63,8 @@ class CronRunCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $jobName
-     * @param bool $force
+     * @param  string                    $jobName
+     * @param  bool                      $force
      * @return ArrayResolver
      * @throws \InvalidArgumentException
      */
@@ -95,7 +95,7 @@ class CronRunCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $jobName
+     * @param  string  $jobName
      * @return CronJob
      */
     protected function queryJob($jobName)

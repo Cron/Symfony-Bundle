@@ -18,7 +18,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
- */ 
+ */
 class Resolver implements ResolverInterface
 {
     /**
@@ -73,7 +73,7 @@ class Resolver implements ResolverInterface
     /**
      * Transform a CronJon into a ShellJob.
      *
-     * @param CronJob $dbJob
+     * @param  CronJob  $dbJob
      * @return ShellJob
      */
     protected function createJob(CronJob $dbJob)

@@ -71,7 +71,7 @@ class CronJob
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -81,7 +81,7 @@ class CronJob
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string  $name
      * @return CronJob
      */
     public function setName($name)
@@ -94,7 +94,7 @@ class CronJob
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -136,7 +136,7 @@ class CronJob
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string  $description
      * @return CronJob
      */
     public function setDescription($description)
@@ -149,7 +149,7 @@ class CronJob
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -159,7 +159,7 @@ class CronJob
     /**
      * Set enabled
      *
-     * @param boolean $enabled
+     * @param  boolean $enabled
      * @return CronJob
      */
     public function setEnabled($enabled)
@@ -172,7 +172,7 @@ class CronJob
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {

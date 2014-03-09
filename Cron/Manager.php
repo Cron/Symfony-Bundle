@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
- */ 
+ */
 class Manager
 {
     /**
@@ -49,9 +49,9 @@ class Manager
         foreach ($reports as $report) {
             $dbReport = new CronReport();
             $dbReport->setJob($report->getJob()->raw);
-            $dbReport->setOutput(implode("\n", (array)$report->getOutput()));
+            $dbReport->setOutput(implode("\n", (array) $report->getOutput()));
             $dbReport->setExitCode($report->getJob()->getProcess()->getExitCode());
-            $dbReport->setRunAt(\DateTime::createFromFormat('U.u', (string)$report->getStartTime()));
+            $dbReport->setRunAt(\DateTime::createFromFormat('U.u', (string) $report->getStartTime()));
             $dbReport->setRunTime($report->getEndTime() - $report->getStartTime());
             $em->persist($dbReport);
         }
@@ -91,7 +91,7 @@ class Manager
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return CronJob
      */
     public function getJobByName($name)

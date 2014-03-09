@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
- */ 
+ */
 class CronListCommand extends ContainerAwareCommand
 {
     /**

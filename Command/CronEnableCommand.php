@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
- */ 
+ */
 class CronEnableCommand extends ContainerAwareCommand
 {
     /**
@@ -50,7 +50,7 @@ class CronEnableCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $jobName
+     * @param  string  $jobName
      * @return CronJob
      */
     protected function queryJob($jobName)

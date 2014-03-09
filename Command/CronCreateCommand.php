@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
- */ 
+ */
 class CronCreateCommand extends ContainerAwareCommand
 {
     /**
@@ -94,7 +94,7 @@ class CronCreateCommand extends ContainerAwareCommand
     /**
      * Validate the job name.
      *
-     * @param string $name
+     * @param  string                    $name
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -114,14 +114,14 @@ class CronCreateCommand extends ContainerAwareCommand
     /**
      * Validate the command.
      *
-     * @param string $command
+     * @param  string                    $command
      * @return string
      * @throws \InvalidArgumentException
      */
     protected function validateCommand($command)
     {
         $parts = explode(' ', $command);
-        $this->getApplication()->get((string)$parts[0]);
+        $this->getApplication()->get((string) $parts[0]);
 
         return $command;
     }
@@ -129,19 +129,18 @@ class CronCreateCommand extends ContainerAwareCommand
     /**
      * Validate the schedule.
      *
-     * @param string $schedule
+     * @param  string                    $schedule
      * @return string
      * @throws \InvalidArgumentException
      */
     protected function validateSchedule($schedule)
     {
         //TODO Validate the schedule.
-
         return $schedule;
     }
 
     /**
-     * @param string $jobName
+     * @param  string  $jobName
      * @return CronJob
      */
     protected function queryJob($jobName)
