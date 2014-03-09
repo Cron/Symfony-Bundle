@@ -43,9 +43,8 @@ class CronDisableCommand extends ContainerAwareCommand
 
         $job->setEnabled(false);
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->persist($job);
-        $em->flush();
+        $this->getContainer()->get('cron.manager')
+            ->saveJob($job);
 
         $output->writeln(sprintf('Cron "%s" disabled', $job->getName()));
     }
@@ -56,9 +55,7 @@ class CronDisableCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('doctrine')->getRepository('CronCronBundle:CronJob')
-            ->findOneBy(array(
-                    'name' => $jobName,
-                ));
+        return $this->getContainer()->get('cron.manager')
+            ->getJobByName($jobName);
     }
 }

@@ -55,9 +55,8 @@ class CronDeleteCommand extends ContainerAwareCommand
             return;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->remove($job);
-        $em->flush();
+        $this->getContainer()->get('cron.manager')
+            ->deleteJob($job);
 
         $output->writeln(sprintf('<info>Cron "%s" was deleted.</info>', $job->getName()));
     }
@@ -68,10 +67,8 @@ class CronDeleteCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('doctrine')->getRepository('CronCronBundle:CronJob')
-            ->findOneBy(array(
-                    'name' => $jobName,
-                ));
+        return $this->getContainer()->get('cron.manager')
+            ->getJobByName($jobName);
     }
 
     /**

@@ -1,12 +1,17 @@
 parameters:
     cron.resolver.class: Cron\CronBundle\Cron\Resolver
+    cron.manager.class:  Cron\CronBundle\Cron\Manager
     cron.executor.class: Cron\Executor\Executor
 
 services:
     cron.resolver:
         class: %cron.resolver.class%
         calls:
-            - [setRegistry, ["@doctrine"]]
+            - [setManager, [@cron.manager]]
             - [setRootDir, [%kernel.root_dir%]]
+    cron.manager:
+        class: %cron.manager.class%
+        calls:
+            - [setRegistry, [@doctrine]]
     cron.executor:
         class: %cron.executor.class%

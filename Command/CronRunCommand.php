@@ -11,7 +11,6 @@ namespace Cron\CronBundle\Command;
 
 use Cron\Cron;
 use Cron\CronBundle\Entity\CronJob;
-use Cron\CronBundle\Entity\CronReport;
 use Cron\Job\ShellJob;
 use Cron\Resolver\ArrayResolver;
 use Cron\Schedule\CrontabSchedule;
@@ -59,17 +58,8 @@ class CronRunCommand extends ContainerAwareCommand
 
         $output->writeln('time: ' . (microtime(true) - $time));
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        foreach ($dbReport->getReports() as $report) {
-            $dbReport = new CronReport();
-            $dbReport->setJob($report->getJob()->raw);
-            $dbReport->setOutput(implode("\n", (array)$report->getOutput()));
-            $dbReport->setExitCode($report->getJob()->getProcess()->getExitCode());
-            $dbReport->setRunAt(\DateTime::createFromFormat('U.u', (string)$report->getStartTime()));
-            $dbReport->setRunTime($report->getEndTime() - $report->getStartTime());
-            $em->persist($dbReport);
-        }
-        $em->flush();
+        $manager = $this->getContainer()->get('cron.manager');
+        $manager->saveReports($dbReport->getReports());
     }
 
     /**
@@ -110,10 +100,9 @@ class CronRunCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('doctrine')->getRepository('CronCronBundle:CronJob')
-            ->findOneBy(array(
-                    'enabled' => 1,
-                    'name' => $jobName,
-                ));
+        $job = $this->getContainer()->get('cron.manager')
+            ->getJobByName($jobName);
+
+        return ($job && $job->getEnabled()) ? $job : null;
     }
 }

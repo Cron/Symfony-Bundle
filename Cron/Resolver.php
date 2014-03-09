@@ -14,7 +14,6 @@ use Cron\Job\JobInterface;
 use Cron\Job\ShellJob;
 use Cron\Resolver\ResolverInterface;
 use Cron\Schedule\CrontabSchedule;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -23,9 +22,9 @@ use Symfony\Component\Process\PhpExecutableFinder;
 class Resolver implements ResolverInterface
 {
     /**
-     * @var Registry
+     * @var Manager
      */
-    protected $registry;
+    protected $manager;
 
     /**
      * @var string
@@ -44,11 +43,11 @@ class Resolver implements ResolverInterface
     }
 
     /**
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $registry
+     * @param Manager $manager
      */
-    public function setRegistry($registry)
+    public function setManager($manager)
     {
-        $this->registry = $registry;
+        $this->manager = $manager;
     }
 
     /**
@@ -66,15 +65,17 @@ class Resolver implements ResolverInterface
      */
     public function resolve()
     {
-        $jobs = $this->registry
-            ->getRepository('CronCronBundle:CronJob')
-            ->findBy(array(
-                'enabled' => 1,
-            ));
+        $jobs = $this->manager->listEnabledJobs();
 
         return array_map(array($this, 'createJob'), $jobs);
     }
 
+    /**
+     * Transform a CronJon into a ShellJob.
+     *
+     * @param CronJob $dbJob
+     * @return ShellJob
+     */
     protected function createJob(CronJob $dbJob)
     {
         $job = new ShellJob();

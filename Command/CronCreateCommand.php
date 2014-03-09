@@ -84,9 +84,8 @@ class CronCreateCommand extends ContainerAwareCommand
                 true
             ));
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->persist($job);
-        $em->flush();
+        $this->getContainer()->get('cron.manager')
+            ->saveJob($job);
 
         $output->writeln('');
         $output->writeln(sprintf('<info>Cron "%s" was created..</info>', $job->getName()));
@@ -147,10 +146,8 @@ class CronCreateCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('doctrine')->getRepository('CronCronBundle:CronJob')
-            ->findOneBy(array(
-                    'name' => $jobName,
-                ));
+        return $this->getContainer()->get('cron.manager')
+            ->getJobByName($jobName);
     }
 
     /**
