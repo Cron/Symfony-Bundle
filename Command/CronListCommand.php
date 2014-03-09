@@ -46,9 +46,6 @@ class CronListCommand extends ContainerAwareCommand
      */
     protected function queryJobs()
     {
-        return $this->getContainer()->get('doctrine')->getRepository('CronCronBundle:CronJob')
-            ->findBy(array(), array(
-                    'name' => 'asc',
-                ));
+        return $this->getContainer()->get('cron.manager')->listJobs();
     }
 }
