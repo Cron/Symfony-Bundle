@@ -77,6 +77,8 @@ class Manager
         return $this->getJobRepo()
             ->findBy(array(
                     'enabled' => 1,
+                ), array(
+                    'name' => 'asc',
                 ));
     }
 
