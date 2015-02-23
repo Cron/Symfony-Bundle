@@ -24,31 +24,25 @@ class Resolver implements ResolverInterface
     /**
      * @var Manager
      */
-    protected $manager;
+    private $manager;
+
+    /**
+     * @var CommandBuilder
+     */
+    private $commandBuilder;
 
     /**
      * @var string
      */
-    protected $rootDir;
+    private $rootDir;
 
-    /**
-     * @var string
-     */
-    private $environment;
 
-    /**
-     * @var string
-     */
-    protected $phpExecutable;
-
-    public function __construct(Manager $manager, $rootDir, $environment)
+    public function __construct(Manager $manager, CommandBuilder $commandBuilder, $rootDir)
     {
         $this->manager = $manager;
+        $this->commandBuilder = $commandBuilder;
         $this->rootDir = dirname($rootDir);
-        $this->environment = $environment;
 
-        $finder = new PhpExecutableFinder();
-        $this->phpExecutable = $finder->find();
     }
 
     /**
@@ -72,7 +66,7 @@ class Resolver implements ResolverInterface
     protected function createJob(CronJob $dbJob)
     {
         $job = new ShellJob();
-        $job->setCommand($this->phpExecutable . ' app/console ' . $dbJob->getCommand(), $this->rootDir);
+        $job->setCommand($this->commandBuilder->build($dbJob->getCommand()), $this->rootDir);
         $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
         $job->raw = $dbJob;
 

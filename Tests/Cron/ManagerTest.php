@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
-class ManagerTest extends WebTestCase
+class ManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testListJobs()
     {
