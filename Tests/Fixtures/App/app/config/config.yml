@@ -1,0 +1,15 @@
+framework:
+    secret: Hell yeah!
+    csrf_protection: true
+    session: ~
+    default_locale: en
+    translator: { fallback: en }
+    profiler: { only_exceptions: false }
+
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver:   pdo_sqlite
+                memory:   true

@@ -158,14 +158,14 @@ class ManagerTest extends WebTestCase
 
     protected function buildRepo()
     {
-        return $this->getMockBuilder('\Doctrine\ORM\EntityRepository')
+        return $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
     }
 
     protected function buildEm()
     {
-        return $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+        return $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
     }
