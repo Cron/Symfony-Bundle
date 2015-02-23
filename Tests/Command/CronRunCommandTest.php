@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-use Cron\CronBundle\Command\CronEnableCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
