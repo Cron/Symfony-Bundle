@@ -19,7 +19,9 @@ class CronDisableCommandTest extends WebTestCase
 {
     public function testUnknownJob()
     {
-        $manager = $this->getMock('Cron\CronBundle\Cron\Manager');
+        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $manager
             ->expects($this->once())
             ->method('getJobByName');
@@ -36,7 +38,9 @@ class CronDisableCommandTest extends WebTestCase
 
     public function testDisable()
     {
-        $manager = $this->getMock('Cron\CronBundle\Cron\Manager');
+        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $job = new \Cron\CronBundle\Entity\CronJob();
         $manager
@@ -57,7 +61,9 @@ class CronDisableCommandTest extends WebTestCase
 
     public function testNoJobArgument()
     {
-        $manager = $this->getMock('Cron\CronBundle\Cron\Manager');
+        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $command = $this->getCommand($manager);
 
         $this->setExpectedException('RuntimeException');

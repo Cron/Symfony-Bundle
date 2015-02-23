@@ -176,8 +176,7 @@ class ManagerTest extends WebTestCase
 
     protected function getManager($registry)
     {
-        $manager = new Manager();
-        $manager->setRegistry($registry);
+        $manager = new Manager($registry);
 
         return $manager;
     }

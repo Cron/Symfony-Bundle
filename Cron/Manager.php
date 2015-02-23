@@ -27,7 +27,7 @@ class Manager
     /**
      * @param RegistryInterface $registry
      */
-    public function setRegistry(RegistryInterface $registry)
+    function __construct(RegistryInterface $registry)
     {
         $this->registry = $registry;
     }

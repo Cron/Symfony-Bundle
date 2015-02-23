@@ -6,9 +6,7 @@ parameters:
 services:
     cron.resolver:
         class: %cron.resolver.class%
-        calls:
-            - [setManager, [@cron.manager]]
-            - [setRootDir, [%kernel.root_dir%]]
+        arguments: [@cron.manager, %kernel.root_dir%]
     cron.manager:
         class: %cron.manager.class%
         calls:

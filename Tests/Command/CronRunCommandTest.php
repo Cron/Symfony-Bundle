@@ -18,13 +18,17 @@ class CronRunCommandTest extends WebTestCase
 {
     public function testNoJobs()
     {
-        $manager = $this->getMock('Cron\CronBundle\Cron\Manager');
+        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $manager
             ->expects($this->once())
             ->method('saveReports')
             ->with($this->isType('array'));
 
-        $resolver = $this->getMock('Cron\CronBundle\Cron\Resolver');
+        $resolver = $this->getMockBuilder('Cron\CronBundle\Cron\Resolver')
+            ->disableOriginalConstructor()
+            ->getMock();
         $resolver
             ->expects($this->any())
             ->method('resolve')
@@ -40,7 +44,9 @@ class CronRunCommandTest extends WebTestCase
 
     public function testOneJob()
     {
-        $manager = $this->getMock('Cron\CronBundle\Cron\Manager');
+        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $manager
             ->expects($this->once())
             ->method('saveReports')
@@ -48,7 +54,9 @@ class CronRunCommandTest extends WebTestCase
 
         $job = new \Cron\Job\ShellJob();
 
-        $resolver = $this->getMock('Cron\CronBundle\Cron\Resolver');
+        $resolver = $this->getMockBuilder('Cron\CronBundle\Cron\Resolver')
+            ->disableOriginalConstructor()
+            ->getMock();
         $resolver
             ->expects($this->any())
             ->method('resolve')
@@ -67,8 +75,12 @@ class CronRunCommandTest extends WebTestCase
     public function testNamedJob()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $manager = $this->getMock('Cron\CronBundle\Cron\Manager');
-        $resolver = $this->getMock('Cron\CronBundle\Cron\Resolver');
+        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $resolver = $this->getMockBuilder('Cron\CronBundle\Cron\Resolver')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $command = $this->getCommand($manager, $resolver);
 

@@ -34,28 +34,21 @@ class Resolver implements ResolverInterface
     /**
      * @var string
      */
+    private $environment;
+
+    /**
+     * @var string
+     */
     protected $phpExecutable;
 
-    public function __construct()
-    {
-        $finder = new PhpExecutableFinder();
-        $this->phpExecutable = $finder->find();
-    }
-
-    /**
-     * @param Manager $manager
-     */
-    public function setManager($manager)
+    public function __construct(Manager $manager, $rootDir, $environment)
     {
         $this->manager = $manager;
-    }
+        $this->rootDir = dirname($rootDir);
+        $this->environment = $environment;
 
-    /**
-     * @param string $kernelDir
-     */
-    public function setRootDir($kernelDir)
-    {
-        $this->rootDir = dirname($kernelDir);
+        $finder = new PhpExecutableFinder();
+        $this->phpExecutable = $finder->find();
     }
 
     /**
