@@ -6,13 +6,13 @@ parameters:
 
 services:
     cron.resolver:
-        class: %cron.resolver.class%
-        arguments: [@cron.manager, @cron.command_builder, %kernel.root_dir%]
+        class: "%cron.resolver.class%"
+        arguments: ["@cron.manager", "@cron.command_builder", "%kernel.root_dir%"]
     cron.manager:
-        class: %cron.manager.class%
-        arguments: [@doctrine]
+        class: "%cron.manager.class%"
+        arguments: ["@doctrine"]
     cron.executor:
-        class: %cron.executor.class%
+        class: "%cron.executor.class%"
     cron.command_builder:
-        class: %cron.command_builder.class%
-        arguments: [%kernel.environment%]
+        class: "%cron.command_builder.class%"
+        arguments: ["%kernel.environment%"]
