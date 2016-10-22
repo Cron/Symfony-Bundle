@@ -11,7 +11,7 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Entity\CronJob;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,11 +47,10 @@ class CronDeleteCommand extends ContainerAwareCommand
         }
 
         $output->writeln(sprintf('<info>You are about to delete "%s".</info>', $job->getName()));
-        if (!$this->getDialogHelper()->askConfirmation(
-            $output,
-            '<question>Delete this job</question> [N/y]: ',
-            false
-        )) {
+
+        $question = new ConfirmationQuestion('<question>Delete this job</question> [N/y]: ', false, '/^(y)/i');
+
+        if (!$this->getQuestionHelper()->ask($input, $output, $question)) {
             return;
         }
 
@@ -72,10 +71,10 @@ class CronDeleteCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DialogHelper
+     * @return QuestionHelper
      */
-    private function getDialogHelper()
+    private function getQuestionHelper()
     {
-        return $this->getHelperSet()->get('dialog');
+        return $this->getHelperSet()->get('question');
     }
 }

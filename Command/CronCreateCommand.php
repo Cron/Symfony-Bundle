@@ -11,7 +11,8 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Entity\CronJob;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -37,52 +38,47 @@ class CronCreateCommand extends ContainerAwareCommand
         $job = new CronJob();
 
         $output->writeln('');
-        $output->writeln('<question>Name</question>');
         $output->writeln('<info>The unique name how the job will be referenced.</info>');
-        $job->setName($this->getDialogHelper()->askAndValidate(
-            $output,
-            ': ',
-            function($input) { return $this->validateJobName($input); },
-            false
-        ));
+
+        $question = new Question('<question>Name:</question> ', false);
+
+        $name = $this->getQuestionHelper()->ask($input, $output, $question);
+        $this->validateJobName($name);
+        $job->setName($name);
 
         $output->writeln('');
-        $output->writeln('<question>Command</question>');
         $output->writeln('<info>The command to execute. You may add extra arguments.</info>');
-        $job->setCommand($this->getDialogHelper()->askAndValidate(
-            $output,
-            ': ',
-            function($input) { return $this->validateCommand($input); },
-            false
-        ));
+
+        $question = new Question('<question>Command:</question> ', false);
+
+        $command = $this->getQuestionHelper()->ask($input, $output, $question);
+        $this->validateCommand($command);
+        $job->setCommand($command);
 
         $output->writeln('');
-        $output->writeln('<question>Schedule</question>');
         $output->writeln('<info>The schedule in the crontab syntax.</info>');
-        $job->setSchedule($this->getDialogHelper()->askAndValidate(
-            $output,
-            ': ',
-            function($input) { return $this->validateSchedule($input); },
-            false
-        ));
+
+        $question = new Question('<question>Schedule:</question> ', false);
+
+        $schedule = $this->getQuestionHelper()->ask($input, $output, $question);
+        $this->validateSchedule($schedule);
+        $job->setSchedule($schedule);
 
         $output->writeln('');
-        $output->writeln('<question>Description</question>');
         $output->writeln('<info>Some more information about the job.</info>');
-        $job->setDescription($this->getDialogHelper()->askAndValidate(
-            $output,
-            '<question>Description</question>: ',
-            function($input) { return (string) $input; }
-        ));
+
+        $question = new Question('<question>Description:</question> ', false);
+
+        $description = $this->getQuestionHelper()->ask($input, $output, $question);
+        $job->setDescription($description);
 
         $output->writeln('');
-        $output->writeln('<question>Enable</question>');
         $output->writeln('<info>Should the cron be enabled.</info>');
-        $job->setEnabled($this->getDialogHelper()->askConfirmation(
-                $output,
-                '[Y/n]: ',
-                true
-            ));
+
+        $question = new ConfirmationQuestion('<question>Enable?</question> [y/n]: ', false, '/^(y)/i');
+
+        $enabled = $this->getQuestionHelper()->ask($input, $output, $question);
+        $job->setEnabled($enabled);
 
         $this->getContainer()->get('cron.manager')
             ->saveJob($job);
@@ -150,10 +146,10 @@ class CronCreateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DialogHelper
+     * @return QuestionHelper
      */
-    private function getDialogHelper()
+    private function getQuestionHelper()
     {
-        return $this->getHelperSet()->get('dialog');
+        return $this->getHelperSet()->get('question');
     }
 }
