@@ -84,7 +84,7 @@ class CronRunCommand extends ContainerAwareCommand
 
         if ($dbJob->getEnabled() || $force) {
             $job = new ShellJob();
-            $job->setCommand($phpExecutable . ' app/console ' . $dbJob->getCommand(), $rootDir);
+            $job->setCommand($phpExecutable . ' bin/console ' . $dbJob->getCommand(), $rootDir);
             $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
             $job->raw = $dbJob;
 
