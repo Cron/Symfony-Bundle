@@ -57,6 +57,11 @@ Installing this bundle can be done through these simple steps:
   app/console cron:run
   ```
 
+6. To run your cron jobs automatically, add the following line to your (or whomever's) crontab:
+  ```shell
+  * * * * * /path/to/symfony/install/app/console cron:run 1>> /dev/null 2>&1
+  ```
+
 Available commands
 ------------------
 
