@@ -103,10 +103,13 @@ class CronJob
 
     /**
      * @param string $command
+     * @return CronJob
      */
     public function setCommand($command)
     {
         $this->command = $command;
+
+        return $this;
     }
 
     /**
@@ -119,10 +122,13 @@ class CronJob
 
     /**
      * @param string $schedule
+     * @return CronJob
      */
     public function setSchedule($schedule)
     {
         $this->schedule = $schedule;
+
+        return $this;
     }
 
     /**
