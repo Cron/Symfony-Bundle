@@ -20,7 +20,7 @@ Installing this bundle can be done through these simple steps:
       // ...
       require: {
           // ...
-          "cron/cron-bundle": "^1.2
+          "cron/cron-bundle": "^1.2"
       }
   }
   ```
