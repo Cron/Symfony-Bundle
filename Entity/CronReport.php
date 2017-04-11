@@ -59,10 +59,13 @@ class CronReport
 
     /**
      * @param CronJob $job
+     * @return CronReport
      */
     public function setJob($job)
     {
         $this->job = $job;
+
+        return $this;
     }
 
     /**
@@ -75,10 +78,13 @@ class CronReport
 
     /**
      * @param string $output
+     * @return CronReport
      */
     public function setOutput($output)
     {
         $this->output = $output;
+
+        return $this;
     }
 
     /**
@@ -91,10 +97,13 @@ class CronReport
 
     /**
      * @param int $exitCode
+     * @return CronReport
      */
     public function setExitCode($exitCode)
     {
         $this->exitCode = $exitCode;
+
+        return $this;
     }
 
     /**
@@ -107,10 +116,13 @@ class CronReport
 
     /**
      * @param \DateTime $runAt
+     * @return CronReport
      */
     public function setRunAt($runAt)
     {
         $this->runAt = $runAt;
+
+        return $this;
     }
 
     /**
@@ -123,10 +135,13 @@ class CronReport
 
     /**
      * @param float $runTime
+     * @return CronReport
      */
     public function setRunTime($runTime)
     {
         $this->runTime = $runTime;
+
+        return $this;
     }
 
     /**
