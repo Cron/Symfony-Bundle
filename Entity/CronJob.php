@@ -25,28 +25,28 @@ class CronJob
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=191)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="command", type="string", length=255)
+     * @ORM\Column(name="command", type="string", length=191)
      */
     private $command;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="schedule", type="string", length=255)
+     * @ORM\Column(name="schedule", type="string", length=191)
      */
     private $schedule;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=191)
      */
     private $description;
 
