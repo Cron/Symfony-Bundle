@@ -33,7 +33,7 @@ class CronStopCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile = getcwd().'/'.CronStartCommand::PID_FILE;
+        $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.CronStartCommand::PID_FILE;
         if (!file_exists($pidFile)) {
             return 0;
         }

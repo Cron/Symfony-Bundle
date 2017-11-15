@@ -50,7 +50,7 @@ class CronStartCommand extends ContainerAwareCommand
             throw new \RuntimeException('This command needs the pcntl extension to run.');
         }
 
-        $pidFile = getcwd().'/'.self::PID_FILE;
+        $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.self::PID_FILE;
 
         if (-1 === $pid = pcntl_fork()) {
             throw new \RuntimeException('Unable to start the cron process.');
