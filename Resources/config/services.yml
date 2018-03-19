@@ -8,11 +8,14 @@ services:
     cron.resolver:
         class: "%cron.resolver.class%"
         arguments: ["@cron.manager", "@cron.command_builder", "%kernel.root_dir%"]
+        public: true
     cron.manager:
         class: "%cron.manager.class%"
         arguments: ["@doctrine"]
+        public: true
     cron.executor:
         class: "%cron.executor.class%"
+        public: true
     cron.command_builder:
         class: "%cron.command_builder.class%"
         arguments: ["%kernel.environment%"]
