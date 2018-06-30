@@ -5,10 +5,6 @@ parameters:
     cron.executor.class:        Cron\Executor\Executor
 
 services:
-    Cron\CronBundle\Command\:
-        resource: '../../Command'
-        tags: [console.command]
-
     cron.resolver:
         class: "%cron.resolver.class%"
         arguments: ["@cron.manager", "@cron.command_builder", "%kernel.root_dir%"]
