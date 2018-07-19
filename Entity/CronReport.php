@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CronReport
  *
- * @ORM\Table()
+ * @ORM\Table(name="cron_report")
  * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronReportRepository")
  */
 class CronReport
@@ -22,18 +22,18 @@ class CronReport
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="run_at", type="datetime")
      * @var \DateTime $runAt
      */
     protected $runAt;
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(name="run_time", type="float")
      * @var float $runTime
      */
     protected $runTime;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="exit_code", type="integer")
      * @var integer $result
      */
     protected $exitCode;

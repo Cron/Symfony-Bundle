@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * CronJob
  *
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="un_name", columns={"name"})})
+ * @ORM\Table(name="cron_job", uniqueConstraints={@ORM\UniqueConstraint(name="un_name", columns={"name"})})
  * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronJobRepository")
  */
 class CronJob
