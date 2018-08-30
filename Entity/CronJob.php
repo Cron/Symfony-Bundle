@@ -32,7 +32,7 @@ class CronJob
     /**
      * @var string
      *
-     * @ORM\Column(name="command", type="string", length=191)
+     * @ORM\Column(name="command", type="string", length=1024)
      */
     private $command;
 
