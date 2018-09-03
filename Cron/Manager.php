@@ -28,7 +28,7 @@ class Manager
     /**
      * @param RegistryInterface $registry
      */
-    function __construct(ManagerRegistry $registry)
+    function __construct(RegistryInterface $registry)
     {
         $this->manager = $registry->getManagerForClass(CronJob::class);
     }
