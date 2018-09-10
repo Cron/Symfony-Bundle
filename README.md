@@ -14,60 +14,48 @@ Installation
 Installing this bundle can be done through these simple steps:
 
 1. Add the bundle to your project as a composer dependency:
-  ```javascript
-  // composer.json
-  {
-      // ...
-      require: {
-          // ...
-          "cron/cron-bundle": "^1.2"
-      }
-  }
-  ```
+```shell
+composer require cron/cron-bundle
+```
 
-2. Update your composer installation:
-  ```shell
-  composer update
-  ````
+2. Add the bundle to your application kernel:
+```php
+// app/AppKernel.php
+public function registerBundles()
+{
+    // ...
+    $bundle = array(
+        // ...
+        new Cron\CronBundle\CronCronBundle(),
+    );
+    // ...
 
-3. Add the bundle to your application kernel:
-  ```php
-  // app/AppKernel.php
-  public function registerBundles()
-  {
-  	// ...
-  	$bundle = array(
-  		// ...
-          new Cron\CronBundle\CronCronBundle(),
-	  );
-      // ...
-  
-      return $bundles;
-  }
-  ```
+    return $bundles;
+}
+```
 
-4. Update your DB schema
-  ```shell
-  bin/console doctrine:schema:update
-  ```
+3. Update your DB schema
+```shell
+bin/console doctrine:schema:update
+```
 
-5. Start using the bundle:
-  ```shell
-  bin/console cron:list
-  bin/console cron:run
-  ```
+4. Start using the bundle:
+```shell
+bin/console cron:list
+bin/console cron:run
+```
 
-6. To run your cron jobs automatically, add the following line to your (or whomever's) crontab:
-  ```shell
-  * * * * * /path/to/symfony/install/app/console cron:run 1>> /dev/null 2>&1
-  ```
+5. To run your cron jobs automatically, add the following line to your (or whomever's) crontab:
+```
+* * * * * /path/to/symfony/install/app/console cron:run 1>> /dev/null 2>&1
+```
   **OR**
   If you don't have a dedicated cron daemon (e.g. in Heroku), you can use:
-  ```shell
-  bin/console cron:start # will run in background mode, use --blocking to run in foreground
-  bin/console cron:stop # will stop the background cron daemon
-  ```
-   
+```shell
+bin/console cron:start # will run in background mode, use --blocking to run in foreground
+bin/console cron:stop # will stop the background cron daemon
+```
+
 Available commands
 ------------------
 
@@ -105,7 +93,7 @@ Disable a job.
 ```shell
 bin/console cron:run [--force] [job]
 ```
-> which we borrowed from Symfony.
+> which we borrowed from Symfony. 
 > Make sure to check out [php-cs-fixer](https://github.com/fabpot/PHP-CS-Fixer) as this will help you a lot.
 
 ### start
@@ -125,7 +113,7 @@ If you would like to help, take a look at the [list of issues](http://github.com
 Requirements
 ------------
 
-PHP 5.3.2 or above
+PHP 5.5.9 or above
 
 Author and contributors
 -----------------------
