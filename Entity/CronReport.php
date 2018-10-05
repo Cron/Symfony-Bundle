@@ -45,6 +45,7 @@ class CronReport
 
     /**
      * @ORM\ManyToOne(targetEntity="CronJob", inversedBy="reports")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @var CronJob
      */
     protected $job;
