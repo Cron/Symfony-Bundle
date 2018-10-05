@@ -36,7 +36,8 @@ public function registerBundles()
 
 3. Update your DB schema
 ```shell
-bin/console doctrine:schema:update
+bin/console make:migration
+bin/console doctrine:migrations:migrate
 ```
 
 4. Start using the bundle:
