@@ -3,6 +3,7 @@ parameters:
     cron.manager.class:         Cron\CronBundle\Cron\Manager
     cron.command_builder.class: Cron\CronBundle\Cron\CommandBuilder
     cron.executor.class:        Cron\Executor\Executor
+    cron.validator.class:       Cron\Validator\CrontabValidator
 
 services:
     Cron\CronBundle\Command\:
@@ -23,3 +24,5 @@ services:
     cron.command_builder:
         class: "%cron.command_builder.class%"
         arguments: ["%kernel.environment%"]
+    cron.validator:
+        class: "%cron.validator.class%"

@@ -131,7 +131,9 @@ class CronCreateCommand extends ContainerAwareCommand
      */
     protected function validateSchedule($schedule)
     {
-        //TODO Validate the schedule.
+        $this->getContainer()->get('cron.validator')
+            ->validate($schedule);
+
         return $schedule;
     }
 
