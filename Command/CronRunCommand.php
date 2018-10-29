@@ -103,6 +103,6 @@ class CronRunCommand extends ContainerAwareCommand
         $job = $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);
 
-        return ($job && $job->getEnabled()) ? $job : null;
+        return $job;
     }
 }
