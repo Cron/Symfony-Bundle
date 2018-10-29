@@ -89,7 +89,7 @@ class CronRunCommand extends ContainerAwareCommand
         $resolver = new ArrayResolver();
 
         $job = new ShellJob();
-        $job->setCommand(escapeshellarg($phpExecutable) . ' bin/console ' . $dbJob->getCommand(), $rootDir);
+        $job->setCommand(escapeshellarg($phpExecutable) . ' ' . $rootDir . '/bin/console ' . $dbJob->getCommand());
         $job->setSchedule(new CrontabSchedule($pattern));
         $job->raw = $dbJob;
 
