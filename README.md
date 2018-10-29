@@ -95,7 +95,13 @@ Disable a job.
 bin/console cron:run [--force] [job]
 ```
 > which we borrowed from Symfony. 
-> Make sure to check out [php-cs-fixer](https://github.com/fabpot/PHP-CS-Fixer) as this will help you a lot.
+> Make sure to check out [php-cs-fixer](https://github.com/fabpot/PHP-CS-Fixer) as this will help you a lot.  
+> Please note that `--force` forces the job to be executed (even if disabled) based on the job schedule  
+
+### run now, independent of the job schedule
+```shell
+bin/console cron:run --schedule_now [--force] job
+```
 
 ### start
 ```shell

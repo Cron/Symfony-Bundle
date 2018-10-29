@@ -34,7 +34,8 @@ class CronRunCommand extends ContainerAwareCommand
         $this->setName('cron:run')
             ->setDescription('Runs any currently schedule cron jobs')
             ->addArgument('job', InputArgument::OPTIONAL, 'Run only this job (if enabled)')
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force the current job.');
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force schedule the current job.')
+            ->addOption('schedule_now', null, InputOption::VALUE_NONE, 'Temporary set the job schedule to now.');
     }
 
     /**
@@ -45,7 +46,7 @@ class CronRunCommand extends ContainerAwareCommand
         $cron = new Cron();
         $cron->setExecutor($this->getContainer()->get('cron.executor'));
         if ($input->getArgument('job')) {
-            $resolver = $this->getJobResolver($input->getArgument('job'), $input->getParameterOption('--force') !== false);
+            $resolver = $this->getJobResolver($input->getArgument('job'), $input->getParameterOption('--force') !== false, $input->getParameterOption('--schedule_now') !== false);
         } else {
             $resolver = $this->getContainer()->get('cron.resolver');
         }
@@ -68,7 +69,7 @@ class CronRunCommand extends ContainerAwareCommand
      * @return ArrayResolver
      * @throws \InvalidArgumentException
      */
-    protected function getJobResolver($jobName, $force = false)
+    protected function getJobResolver($jobName, $force = false, $schedule_now = false)
     {
         $dbJob = $this->queryJob($jobName);
 
@@ -83,12 +84,13 @@ class CronRunCommand extends ContainerAwareCommand
         $finder = new PhpExecutableFinder();
         $phpExecutable = $finder->find();
         $rootDir = dirname($this->getContainer()->getParameter('kernel.root_dir'));
+        $pattern = !$schedule_now ? $dbJob->getSchedule() : '* * * * *';
 
         $resolver = new ArrayResolver();
 
         $job = new ShellJob();
         $job->setCommand(escapeshellarg($phpExecutable) . ' bin/console ' . $dbJob->getCommand(), $rootDir);
-        $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
+        $job->setSchedule(new CrontabSchedule($pattern));
         $job->raw = $dbJob;
 
         $resolver->addJob($job);
