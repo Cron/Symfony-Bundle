@@ -45,7 +45,7 @@ class CronRunCommand extends ContainerAwareCommand
         $cron = new Cron();
         $cron->setExecutor($this->getContainer()->get('cron.executor'));
         if ($input->getArgument('job')) {
-            $resolver = $this->getJobResolver($input->getArgument('job'), $input->hasOption('force'));
+            $resolver = $this->getJobResolver($input->getArgument('job'), $input->getParameterOption('--force') !== false);
         } else {
             $resolver = $this->getContainer()->get('cron.resolver');
         }
@@ -76,20 +76,22 @@ class CronRunCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException('Unknown job.');
         }
 
+        if (!$dbJob->getEnabled() && !$force) {
+            throw new \InvalidArgumentException('Job is disabled, run with --force to force schedule it.');
+        }
+
         $finder = new PhpExecutableFinder();
         $phpExecutable = $finder->find();
         $rootDir = dirname($this->getContainer()->getParameter('kernel.root_dir'));
 
         $resolver = new ArrayResolver();
 
-        if ($dbJob->getEnabled() || $force) {
-            $job = new ShellJob();
-            $job->setCommand(escapeshellarg($phpExecutable) . ' bin/console ' . $dbJob->getCommand(), $rootDir);
-            $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
-            $job->raw = $dbJob;
+        $job = new ShellJob();
+        $job->setCommand(escapeshellarg($phpExecutable) . ' bin/console ' . $dbJob->getCommand(), $rootDir);
+        $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
+        $job->raw = $dbJob;
 
-            $resolver->addJob($job);
-        }
+        $resolver->addJob($job);
 
         return $resolver;
     }
