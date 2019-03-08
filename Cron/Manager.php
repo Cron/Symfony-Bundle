@@ -90,6 +90,7 @@ class Manager
         $em = $this->registry->getManager();
         $em->persist($job);
         $em->flush();
+        $em->clear();
     }
 
     /**
@@ -112,5 +113,6 @@ class Manager
         $em = $this->registry->getManager();
         $em->remove($job);
         $em->flush();
+        $em->clear();
     }
 }
