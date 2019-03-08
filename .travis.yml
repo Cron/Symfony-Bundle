@@ -6,7 +6,8 @@ php:
   - 7.0
   - 7.1
   - 7.2
-  - hhvm
+  - nightly
+  - hhvm-nightly
 
 matrix:
   fast_finish: true
@@ -29,6 +30,9 @@ matrix:
       env: SYMFONY_VERSION=4.1.*
     - php: 7.1
       env: SYMFONY_VERSION=4.2.*
+  allow_failures:
+    - php: hhvm-nightly
+    - php: nightly
       
 cache:
   directories:
