@@ -74,6 +74,8 @@ class Manager
      */
     public function listEnabledJobs()
     {
+        $this->getJobRepo()->clear();
+
         return $this->getJobRepo()
             ->findBy(array(
                     'enabled' => 1,
