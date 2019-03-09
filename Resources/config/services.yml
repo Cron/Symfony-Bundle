@@ -26,3 +26,4 @@ services:
         arguments: ["%kernel.environment%"]
     cron.validator:
         class: "%cron.validator.class%"
+        public: true
