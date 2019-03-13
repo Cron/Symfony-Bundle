@@ -9,7 +9,7 @@
  */
 
 use Cron\CronBundle\Cron\Manager;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
@@ -50,7 +50,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $registry = $this->buildRegistry();
         $registry
             ->expects($this->once())
-            ->method('getManager')
+            ->method('getManagerForClass')
             ->will($this->returnValue($entityManager));
 
         $manager = $this->getManager($registry);
@@ -71,7 +71,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $registry = $this->buildRegistry();
         $registry
             ->expects($this->once())
-            ->method('getManager')
+            ->method('getManagerForClass')
             ->will($this->returnValue($entityManager));
 
         $manager = $this->getManager($registry);
@@ -105,7 +105,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $registry = $this->buildRegistry();
         $registry
             ->expects($this->once())
-            ->method('getManager')
+            ->method('getManagerForClass')
             ->will($this->returnValue($entityManager));
 
         $manager = $this->getManager($registry);
@@ -126,7 +126,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $registry = $this->buildRegistry();
         $registry
             ->expects($this->once())
-            ->method('getManager')
+            ->method('getManagerForClass')
             ->will($this->returnValue($entityManager));
 
         $manager = $this->getManager($registry);
@@ -149,6 +149,16 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getRepository')
             ->will($this->returnValue($jobRepo));
+
+        $entityManager = $this->buildEm();
+        $entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($jobRepo));
+        $registry
+            ->expects($this->once())
+            ->method('getManagerForClass')
+            ->will($this->returnValue($entityManager));
 
         return $this->getManager($registry);
     }
