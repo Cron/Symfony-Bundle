@@ -26,7 +26,7 @@ services:
     cron.manager_decorator:
         class: Cron\CronBundle\Cron\ManagerDecorator
         decorates: cron.manager
-        arguments: ["@cron.manager_decorator.inner", "@doctrine.orm.default_entity_manager"]
+        arguments: ["@cron.manager_decorator.inner", "@doctrine.orm.entity_manager"]
         public: true
     cron.executor:
         class: "%cron.executor.class%"

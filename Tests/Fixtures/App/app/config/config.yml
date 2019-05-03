@@ -13,3 +13,5 @@ doctrine:
             default:
                 driver:   pdo_sqlite
                 memory:   true
+    orm:
+        auto_mapping: true
