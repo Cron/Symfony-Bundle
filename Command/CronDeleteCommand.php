@@ -15,6 +15,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Cron\CronBundle\Cron\ManagerDecorator;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -22,13 +24,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CronDeleteCommand extends ContainerAwareCommand
 {
     /**
+     * @var ManagerDecorator|null
+     */
+    private $cronManager;
+    
+    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this->setName('cron:delete')
             ->setDescription('Delete a cron job')
-            ->addArgument('job', InputArgument::REQUIRED, 'The job to delete');
+            ->addArgument('job', InputArgument::REQUIRED, 'The job to delete')
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
     }
 
     /**
@@ -36,6 +44,8 @@ class CronDeleteCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->cronManager = Helper\CronCommandHelper::setManagerHelper($this->getApplication(), $input);
+        
         $job = $this->queryJob($input->getArgument('job'));
 
         if (!$job) {
@@ -54,7 +64,7 @@ class CronDeleteCommand extends ContainerAwareCommand
             return;
         }
 
-        $this->getContainer()->get('cron.manager')
+        $this->cronManager
             ->deleteJob($job);
 
         $output->writeln(sprintf('<info>Cron "%s" was deleted.</info>', $job->getName()));
@@ -66,7 +76,7 @@ class CronDeleteCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('cron.manager')
+        return $this->cronManager
             ->getJobByName($jobName);
     }
 

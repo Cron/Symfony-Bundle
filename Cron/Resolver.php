@@ -24,17 +24,17 @@ class Resolver implements ResolverInterface
     /**
      * @var Manager
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var CommandBuilder
      */
-    private $commandBuilder;
+    protected $commandBuilder;
 
     /**
      * @var string
      */
-    private $rootDir;
+    protected $rootDir;
 
 
     public function __construct(Manager $manager, CommandBuilder $commandBuilder, $rootDir)
@@ -42,7 +42,6 @@ class Resolver implements ResolverInterface
         $this->manager = $manager;
         $this->commandBuilder = $commandBuilder;
         $this->rootDir = dirname($rootDir);
-
     }
 
     /**

@@ -20,12 +20,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Cron\CronBundle\Cron\ManagerDecorator;
+use Cron\CronBundle\Cron\ResolverDecorator;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
 class CronRunCommand extends ContainerAwareCommand
 {
+    /**
+     * @var ManagerDecorator|null
+     */
+    private $cronManager;
+    
     /**
      * {@inheritdoc}
      */
@@ -34,7 +41,8 @@ class CronRunCommand extends ContainerAwareCommand
         $this->setName('cron:run')
             ->setDescription('Runs any currently schedule cron jobs')
             ->addArgument('job', InputArgument::OPTIONAL, 'Run only this job (if enabled)')
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force the current job.');
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force the current job.')
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
     }
 
     /**
@@ -42,13 +50,16 @@ class CronRunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->cronManager = Helper\CronCommandHelper::setManagerHelper($this->getApplication(), $input);
+
         $cron = new Cron();
         $cron->setExecutor($this->getContainer()->get('cron.executor'));
         if ($input->getArgument('job')) {
             $resolver = $this->getJobResolver($input->getArgument('job'), $input->hasOption('force'));
         } else {
-            $resolver = $this->getContainer()->get('cron.resolver');
+            $resolver = new ResolverDecorator($this->getContainer()->get('cron.resolver'), $this->cronManager);
         }
+
         $cron->setResolver($resolver);
 
         $time = microtime(true);
@@ -58,7 +69,7 @@ class CronRunCommand extends ContainerAwareCommand
 
         $output->writeln('time: ' . (microtime(true) - $time));
 
-        $manager = $this->getContainer()->get('cron.manager');
+        $manager = $this->cronManager;
         $manager->saveReports($dbReport->getReports());
     }
 
@@ -100,7 +111,7 @@ class CronRunCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        $job = $this->getContainer()->get('cron.manager')
+        $job = $this->cronManager
             ->getJobByName($jobName);
 
         return ($job && $job->getEnabled()) ? $job : null;

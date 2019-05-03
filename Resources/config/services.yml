@@ -14,9 +14,19 @@ services:
         class: "%cron.resolver.class%"
         arguments: ["@cron.manager", "@cron.command_builder", "%kernel.root_dir%"]
         public: true
+    cron.resolver_decorator:
+        class: Cron\CronBundle\Cron\ResolverDecorator
+        decorates: cron.resolver
+        arguments: ["@cron.resolver_decorator.inner", "@cron.manager_decorator"]
+        public: true
     cron.manager:
         class: "%cron.manager.class%"
         arguments: ["@doctrine"]
+        public: true
+    cron.manager_decorator:
+        class: Cron\CronBundle\Cron\ManagerDecorator
+        decorates: cron.manager
+        arguments: ["@cron.manager_decorator.inner", "@doctrine.orm.entity_manager"]
         public: true
     cron.executor:
         class: "%cron.executor.class%"

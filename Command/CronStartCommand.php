@@ -31,7 +31,8 @@ class CronStartCommand extends ContainerAwareCommand
     {
         $this->setName('cron:start')
             ->setDescription('Starts cron scheduler')
-            ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.');
+            ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.')
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
     }
 
     /**
@@ -41,7 +42,7 @@ class CronStartCommand extends ContainerAwareCommand
     {
         if ($input->getOption('blocking')) {
             $output->writeln(sprintf('<info>%s</info>', 'Starting cron scheduler in blocking mode.'));
-            $this->scheduler($output->isVerbose() ? $output : new NullOutput(), null);
+            $this->scheduler($input,$output->isVerbose() ? $output : new NullOutput(), null);
 
             return 0;
         }
@@ -68,15 +69,22 @@ class CronStartCommand extends ContainerAwareCommand
             throw new \RuntimeException('Unable to set the child process as session leader.');
         }
 
-        $this->scheduler(new NullOutput(), $pidFile);
+        $this->scheduler($input, new NullOutput(), $pidFile);
     }
 
-    private function scheduler(OutputInterface $output, $pidFile)
+    private function scheduler(InputInterface $startInput, OutputInterface $output, $pidFile)
     {
-        $input = new ArrayInput([]);
+        $command = $this->getApplication()->find('cron:run');
 
-        $console = $this->getApplication();
-        $command = $console->find('cron:run');
+        $arguments = [
+            'command' => 'cron:run'
+        ];
+
+        if($startInput->hasOption('connection')){
+            $arguments['--connection'] = $startInput->getOption('connection');
+        }
+
+        $input = new ArrayInput($arguments);
 
         while (true) {
             $now = microtime(true);
@@ -85,7 +93,6 @@ class CronStartCommand extends ContainerAwareCommand
             if (null !== $pidFile && !file_exists($pidFile)) {
                 break;
             }
-
             $command->run($input, $output);
         }
     }
