@@ -13,6 +13,8 @@ use Cron\CronBundle\Entity\CronJob;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Cron\CronBundle\Cron\ManagerDecorator;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -20,12 +22,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CronListCommand extends ContainerAwareCommand
 {
     /**
+     * @var ManagerDecorator|null
+     */
+    private $cronManager;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this->setName('cron:list')
-            ->setDescription('List all available crons');
+            ->setDescription('List all available crons')
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
     }
 
     /**
@@ -33,7 +41,9 @@ class CronListCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $jobs = $this->queryJobs();
+        $this->cronManager = Helper\CronCommandHelper::setManagerHelper($this->getApplication(), $input);
+
+        $jobs = $this->queryJobs($input);
 
         foreach ($jobs as $job) {
             $state = $job->getEnabled() ? 'x' : ' ';
@@ -44,8 +54,8 @@ class CronListCommand extends ContainerAwareCommand
     /**
      * @return CronJob[]
      */
-    protected function queryJobs()
+    protected function queryJobs($input)
     {
-        return $this->getContainer()->get('cron.manager')->listJobs();
+        return $this->cronManager->listJobs();
     }
 }

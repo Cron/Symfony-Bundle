@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Cron\CronBundle\Cron\ManagerDecorator;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -21,13 +23,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CronDisableCommand extends ContainerAwareCommand
 {
     /**
+     * @var ManagerDecorator|null
+     */
+    private $cronManager;
+    
+    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this->setName('cron:disable')
             ->setDescription('Disable a cron job')
-            ->addArgument('job', InputArgument::REQUIRED, 'The job to disable');
+            ->addArgument('job', InputArgument::REQUIRED, 'The job to disable')
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
     }
 
     /**
@@ -35,6 +43,8 @@ class CronDisableCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->cronManager = Helper\CronCommandHelper::setManagerHelper($this->getApplication(), $input);
+        
         $job = $this->queryJob($input->getArgument('job'));
 
         if (!$job) {
@@ -43,7 +53,7 @@ class CronDisableCommand extends ContainerAwareCommand
 
         $job->setEnabled(false);
 
-        $this->getContainer()->get('cron.manager')
+        $this->cronManager
             ->saveJob($job);
 
         $output->writeln(sprintf('Cron "%s" disabled', $job->getName()));
@@ -55,7 +65,7 @@ class CronDisableCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('cron.manager')
+        return $this->cronManager
             ->getJobByName($jobName);
     }
 }

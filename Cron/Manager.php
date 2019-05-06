@@ -64,8 +64,8 @@ class Manager
     {
         return $this->getJobRepo()
             ->findBy(array(), array(
-                    'name' => 'asc',
-                ));
+                'name' => 'asc',
+            ));
     }
 
     /**
@@ -75,10 +75,10 @@ class Manager
     {
         return $this->getJobRepo()
             ->findBy(array(
-                    'enabled' => 1,
-                ), array(
-                    'name' => 'asc',
-                ));
+                'enabled' => 1,
+            ), array(
+                'name' => 'asc',
+            ));
     }
 
     /**
@@ -98,8 +98,8 @@ class Manager
     {
         return $this->getJobRepo()
             ->findOneBy(array(
-                    'name' => $name,
-                ));
+                'name' => $name,
+            ));
     }
 
     /**

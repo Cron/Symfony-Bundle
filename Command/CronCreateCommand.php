@@ -15,6 +15,8 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Cron\CronBundle\Cron\ManagerDecorator;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -22,12 +24,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CronCreateCommand extends ContainerAwareCommand
 {
     /**
+     * @var ManagerDecorator|null
+     */
+    private $cronManager;
+    
+    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this->setName('cron:create')
-            ->setDescription('Create a cron job');
+            ->setDescription('Create a cron job')
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
     }
 
     /**
@@ -35,6 +43,8 @@ class CronCreateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->cronManager = Helper\CronCommandHelper::setManagerHelper($this->getApplication(), $input);
+        
         $job = new CronJob();
 
         $output->writeln('');
@@ -80,8 +90,7 @@ class CronCreateCommand extends ContainerAwareCommand
         $enabled = $this->getQuestionHelper()->ask($input, $output, $question);
         $job->setEnabled($enabled);
 
-        $this->getContainer()->get('cron.manager')
-            ->saveJob($job);
+        $this->cronManager->saveJob($job);
 
         $output->writeln('');
         $output->writeln(sprintf('<info>Cron "%s" was created..</info>', $job->getName()));
@@ -143,8 +152,7 @@ class CronCreateCommand extends ContainerAwareCommand
      */
     protected function queryJob($jobName)
     {
-        return $this->getContainer()->get('cron.manager')
-            ->getJobByName($jobName);
+        return $this->cronManager->getJobByName($jobName);
     }
 
     /**
