@@ -42,8 +42,8 @@ class CronRunCommand extends ContainerAwareCommand
             ->setDescription('Runs any currently schedule cron jobs')
             ->addArgument('job', InputArgument::OPTIONAL, 'Run only this job (if enabled)')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force schedule the current job.')
-            ->addOption('schedule_now', null, InputOption::VALUE_NONE, 'Temporary set the job schedule to now.')
-            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.');
+            ->addOption('connection', null, InputOption::VALUE_REQUIRED, 'The database connection to use for this command.')
+            ->addOption('schedule_now', null, InputOption::VALUE_NONE, 'Temporary set the job schedule to now.');
     }
 
     /**
