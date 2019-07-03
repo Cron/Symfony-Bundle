@@ -9,11 +9,7 @@
  */
 namespace Cron\CronBundle\Cron;
 
-use Cron\CronBundle\Entity\CronJob;
-use Cron\CronBundle\Entity\CronJobRepository;
-use Cron\CronBundle\Entity\CronReport;
 use Doctrine\ORM\EntityManager;
-use eZ\Publish\Core\Repository\Repository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
