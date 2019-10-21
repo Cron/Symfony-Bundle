@@ -10,7 +10,7 @@
 
 namespace Cron\CronBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Cron\CronBundle\Cron\CronCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Alexander Lokhman <alex.lokhman@gmail.com>
  */
-class CronStartCommand extends ContainerAwareCommand
+class CronStartCommand extends CronCommand
 {
     const PID_FILE = '.cron-pid';
 
