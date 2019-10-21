@@ -9,15 +9,17 @@
  */
 namespace Cron\CronBundle\Command;
 
+use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
-class CronListCommand extends ContainerAwareCommand
+class CronListCommand extends CronCommand
 {
     /**
      * {@inheritdoc}

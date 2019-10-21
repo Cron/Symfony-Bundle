@@ -9,8 +9,8 @@
  */
 namespace Cron\CronBundle\Command;
 
+use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
-class CronCreateCommand extends ContainerAwareCommand
+class CronCreateCommand extends CronCommand
 {
     /**
      * {@inheritdoc}
