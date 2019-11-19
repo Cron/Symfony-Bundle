@@ -85,6 +85,8 @@ class CronCreateCommand extends CronCommand
 
         $output->writeln('');
         $output->writeln(sprintf('<info>Cron "%s" was created..</info>', $job->getName()));
+
+        return 0;
     }
 
     /**

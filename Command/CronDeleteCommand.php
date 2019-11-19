@@ -58,6 +58,8 @@ class CronDeleteCommand extends CronCommand
             ->deleteJob($job);
 
         $output->writeln(sprintf('<info>Cron "%s" was deleted.</info>', $job->getName()));
+
+        return 0;
     }
 
     /**

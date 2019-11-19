@@ -61,6 +61,8 @@ class CronRunCommand extends CronCommand
 
         $manager = $this->getContainer()->get('cron.manager');
         $manager->saveReports($dbReport->getReports());
+
+        return 0;
     }
 
     /**
