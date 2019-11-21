@@ -13,6 +13,7 @@ use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Cron\Report\JobReport;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -41,7 +42,7 @@ class Manager
     }
 
     /**
-     * @param CronReport[] $reports
+     * @param JobReport[] $reports
      */
     public function saveReports(array $reports)
     {
