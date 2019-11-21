@@ -12,6 +12,7 @@ namespace Cron\CronBundle\Cron;
 use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
+use Cron\Report\JobReport;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -41,7 +42,7 @@ class Manager
     }
 
     /**
-     * @param CronReport[] $reports
+     * @param JobReport[] $reports
      */
     public function saveReports(array $reports)
     {
