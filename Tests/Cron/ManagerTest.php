@@ -79,7 +79,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $job = new \Cron\Job\ShellJob();
         $job->setCommand('ls');
         $job->raw = '';
-        
+
         $report = $this->getMockBuilder('Cron\Report\JobReport')
             ->setConstructorArgs(array($job))
             ->getMock();
