@@ -192,4 +192,9 @@ class CronJob
     {
         return $this->reports;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
