@@ -12,7 +12,7 @@ namespace Cron\CronBundle\Cron;
 use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Cron\Report\JobReport;
 
 /**
