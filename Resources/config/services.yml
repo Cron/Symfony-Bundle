@@ -12,7 +12,7 @@ services:
         tags: [console.command]
     cron.resolver:
         class: "%cron.resolver.class%"
-        arguments: ["@cron.manager", "@cron.command_builder", "%kernel.root_dir%"]
+        arguments: ["@cron.manager", "@cron.command_builder", "%kernel.project_dir%"]
         public: true
     cron.manager:
         class: "%cron.manager.class%"

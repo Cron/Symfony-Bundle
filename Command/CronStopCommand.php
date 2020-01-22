@@ -55,5 +55,7 @@ class CronStopCommand extends CronCommand
         unlink($pidFile);
 
         $output->writeln(sprintf('<info>%s</info>', 'Cron scheduler is stopped.'));
+
+        return 0;
     }
 }

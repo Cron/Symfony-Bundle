@@ -12,8 +12,8 @@ namespace Cron\CronBundle\Cron;
 use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
+use Doctrine\Persistence\ManagerRegistry;
 use Cron\Report\JobReport;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -21,14 +21,14 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class Manager
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $manager;
 
     /**
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    function __construct(RegistryInterface $registry)
+    function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManagerForClass(CronJob::class);
     }

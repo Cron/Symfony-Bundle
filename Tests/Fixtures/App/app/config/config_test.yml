@@ -5,3 +5,10 @@ framework:
     test: ~
     session:
         storage_id: session.storage.filesystem
+
+services:
+    # Override for testing, otherwise the test CommandBuilderTest::testEnv fails
+    cron.command_builder:
+        class: "%cron.command_builder.class%"
+        arguments: ["%kernel.environment%"]
+        public: true

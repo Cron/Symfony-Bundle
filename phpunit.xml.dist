@@ -8,5 +8,6 @@
     </testsuites>
     <php>
         <server name="KERNEL_DIR" value="./Tests/Fixtures/App/app" />
+        <env name="KERNEL_CLASS" value="Cron\CronBundle\Tests\Fixtures\App\app\AppKernel" />
     </php>
 </phpunit>

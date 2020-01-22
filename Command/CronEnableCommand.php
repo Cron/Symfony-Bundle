@@ -47,6 +47,8 @@ class CronEnableCommand extends CronCommand
             ->saveJob($job);
 
         $output->writeln(sprintf('Cron "%s" enabled', $job->getName()));
+
+        return 0;
     }
 
     /**

@@ -80,7 +80,10 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $job->setCommand('ls');
         $job->raw = '';
 
-        $report = $this->getMock('Cron\Report\JobReport', array(), array($job));
+        $report = $this->getMockBuilder('Cron\Report\JobReport')
+            ->setConstructorArgs(array($job))
+            ->getMock();
+
         $report->expects($this->any())
             ->method('getJob')
             ->will($this->returnValue($job));

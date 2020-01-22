@@ -41,6 +41,8 @@ class CronListCommand extends CronCommand
             $state = $job->getEnabled() ? 'x' : ' ';
             $output->writeln(sprintf(' [%s] %s', $state, $job->getName()));
         }
+
+        return 0;
     }
 
     /**
