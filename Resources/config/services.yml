@@ -6,13 +6,15 @@ parameters:
     cron.validator.class:       Cron\Validator\CrontabValidator
 
 services:
+    Cron\CronBundle\Services\SymfonyVersionHelper:
+        arguments: [ "@service_container"]
     Cron\CronBundle\Command\:
         resource: '../../Command'
         arguments: [ "@service_container"]
         tags: [console.command]
     cron.resolver:
         class: "%cron.resolver.class%"
-        arguments: ["@cron.manager", "@cron.command_builder", "%kernel.project_dir%"]
+        arguments: ["@cron.manager", "@cron.command_builder", '@=service("Cron\\CronBundle\\Services\\SymfonyVersionHelper").getRootDir()']
         public: true
     cron.manager:
         class: "%cron.manager.class%"
