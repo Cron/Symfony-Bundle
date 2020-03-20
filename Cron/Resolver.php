@@ -41,7 +41,7 @@ class Resolver implements ResolverInterface
     {
         $this->manager = $manager;
         $this->commandBuilder = $commandBuilder;
-        $this->rootDir = dirname($rootDir);
+        $this->rootDir = $rootDir;
 
     }
 
