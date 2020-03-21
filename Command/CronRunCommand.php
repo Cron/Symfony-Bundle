@@ -85,7 +85,7 @@ class CronRunCommand extends CronCommand
 
         $finder = new PhpExecutableFinder();
         $phpExecutable = $finder->find();
-        $rootDir = dirname($this->getContainer()->getParameter('kernel.root_dir'));
+        $rootDir = $this->getContainer()->getParameter('kernel.project_dir');
         $pattern = !$schedule_now ? $dbJob->getSchedule() : '* * * * *';
 
         $resolver = new ArrayResolver();
