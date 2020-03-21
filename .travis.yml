@@ -12,24 +12,12 @@ php:
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-      env: SYMFONY_VERSION=2.3.*
-    - php: 7.1
-      env: SYMFONY_VERSION=2.7.*
-    - php: 7.1
-      env: SYMFONY_VERSION=2.8.*
-    - php: 7.1
-      env: SYMFONY_VERSION=3.0.*
-    - php: 7.1
-      env: SYMFONY_VERSION=3.1.*
-    - php: 7.1
-      env: SYMFONY_VERSION=3.2.*
-    - php: 7.1
-      env: SYMFONY_VERSION=4.0.*
-    - php: 7.1
-      env: SYMFONY_VERSION=4.1.*
-    - php: 7.1
-      env: SYMFONY_VERSION=4.2.*
+    - php: 7.2
+      env: SYMFONY_VERSION=3.4.*
+    - php: 7.4
+      env: SYMFONY_VERSION=4.4.*
+    - php: 7.4
+      env: SYMFONY_VERSION=5.0.*
   allow_failures:
     - php: hhvm-nightly
     - php: nightly
