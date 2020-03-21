@@ -28,7 +28,7 @@ class CronDisableCommandTest extends WebTestCase
 
         $command = $this->getCommand($manager);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
@@ -66,7 +66,7 @@ class CronDisableCommandTest extends WebTestCase
             ->getMock();
         $command = $this->getCommand($manager);
 
-        $this->setExpectedException('RuntimeException');
+        $this->expectException('RuntimeException');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array());

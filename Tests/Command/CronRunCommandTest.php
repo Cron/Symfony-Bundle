@@ -39,7 +39,7 @@ class CronRunCommandTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array());
 
-        $this->assertContains('time:', $commandTester->getDisplay());
+        $this->assertStringContainsString('time:', $commandTester->getDisplay());
     }
 
     public function testOneJob()
@@ -69,12 +69,12 @@ class CronRunCommandTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array());
 
-        $this->assertContains('time:', $commandTester->getDisplay());
+        $this->assertStringContainsString('time:', $commandTester->getDisplay());
     }
 
     public function testNamedJob()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -89,7 +89,7 @@ class CronRunCommandTest extends WebTestCase
                 'job' => 'jobName',
             ));
 
-        $this->assertContains('time:', $commandTester->getDisplay());
+        $this->assertStringContainsString('time:', $commandTester->getDisplay());
     }
 
     protected function getCommand($manager, $resolver)

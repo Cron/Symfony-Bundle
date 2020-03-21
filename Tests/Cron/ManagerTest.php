@@ -13,7 +13,7 @@ use Cron\CronBundle\Cron\Manager;
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
-class ManagerTest extends \PHPUnit_Framework_TestCase
+class ManagerTest extends \PHPUnit\Framework\TestCase
 {
     public function testListJobs()
     {
