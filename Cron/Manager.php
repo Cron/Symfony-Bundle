@@ -51,7 +51,7 @@ class Manager
             $dbReport->setJob($report->getJob()->raw);
             $dbReport->setOutput(implode("\n", (array) $report->getOutput()));
             $dbReport->setExitCode($report->getJob()->getProcess()->getExitCode());
-            $dbReport->setRunAt(\DateTime::createFromFormat('U.u', (string) $report->getStartTime()));
+            $dbReport->setRunAt(\DateTime::createFromFormat('U.u', number_format($report->getStartTime(), 6, '.', '')));
             $dbReport->setRunTime($report->getEndTime() - $report->getStartTime());
             $this->manager->persist($dbReport);
         }
