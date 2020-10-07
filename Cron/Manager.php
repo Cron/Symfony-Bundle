@@ -14,6 +14,7 @@ use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
 use Doctrine\Persistence\ManagerRegistry;
 use Cron\Report\JobReport;
+use Doctrine\DBAL\Connection;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -46,6 +47,11 @@ class Manager
      */
     public function saveReports(array $reports)
     {
+        $connection = $this->manager->getConnection();
+        if($connection instanceof Connection && false === $connection->ping()){
+            $connection->close();
+            $connection->connect();
+        }
         foreach ($reports as $report) {
             $dbReport = new CronReport();
             $dbReport->setJob($report->getJob()->raw);
