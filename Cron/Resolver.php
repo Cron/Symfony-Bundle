@@ -36,13 +36,17 @@ class Resolver implements ResolverInterface
      */
     private $rootDir;
 
+    /**
+     * @var string
+     */
+    private $scriptName;
+
 
     public function __construct(Manager $manager, CommandBuilder $commandBuilder, $rootDir)
     {
         $this->manager = $manager;
         $this->commandBuilder = $commandBuilder;
         $this->rootDir = $rootDir;
-
     }
 
     /**
@@ -58,6 +62,16 @@ class Resolver implements ResolverInterface
     }
 
     /**
+     * Overrides the script name used by the command builder to build the command.
+     *
+     * @param string $scriptName
+     */
+    public function setScriptName($scriptName)
+    {
+        $this->scriptName = $scriptName;
+    }
+
+    /**
      * Transform a CronJon into a ShellJob.
      *
      * @param  CronJob  $dbJob
@@ -66,7 +80,7 @@ class Resolver implements ResolverInterface
     protected function createJob(CronJob $dbJob)
     {
         $job = new ShellJob();
-        $job->setCommand($this->commandBuilder->build($dbJob->getCommand()), $this->rootDir);
+        $job->setCommand($this->commandBuilder->build($dbJob->getCommand(), $this->scriptName), $this->rootDir);
         $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
         $job->raw = $dbJob;
 

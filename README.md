@@ -103,6 +103,11 @@ bin/console cron:run [--force] [job]
 bin/console cron:run --schedule_now [--force] job
 ```
 
+### run in non-cli contexts (i.e. [from a controller](https://symfony.com/doc/current/console/command_in_controller.html))
+```shell
+bin/console cron:run --script_name='bin/console'
+```
+
 ### start
 ```shell
 bin/console cron:start [--blocking]

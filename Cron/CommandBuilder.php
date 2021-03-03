@@ -42,8 +42,8 @@ class CommandBuilder
      *
      * @return string
      */
-    public function build($command)
+    public function build($command, $scriptName = null)
     {
-        return sprintf('%s %s %s --env=%s', $this->phpExecutable, $_SERVER['SCRIPT_NAME'], $command, $this->environment);
+        return sprintf('%s %s %s --env=%s', $this->phpExecutable, $scriptName ?? $_SERVER['SCRIPT_NAME'], $command, $this->environment);
     }
 }
