@@ -30,7 +30,7 @@ public function registerBundles()
     );
     // ...
 
-    return $bundles;
+    return $bundle;
 }
 ```
 
