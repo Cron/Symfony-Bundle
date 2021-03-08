@@ -44,6 +44,6 @@ class CommandBuilder
      */
     public function build($command)
     {
-        return sprintf('%s %s %s --env=%s', $this->phpExecutable, $_SERVER['SCRIPT_NAME'], $command, $this->environment);
+        return sprintf('%s %s %s %s --env=%s', $this->phpExecutable, ' --define memory_limit='.ini_get('memory_limit'), $_SERVER['SCRIPT_NAME'], $command, $this->environment);
     }
 }
