@@ -56,6 +56,7 @@ class Manager
             $dbReport = new CronReport();
             $dbReport->setJob($report->getJob()->raw);
             $dbReport->setOutput(implode("\n", (array) $report->getOutput()));
+            $dbReport->setError(implode("\n", (array) $report->getError()));
             $dbReport->setExitCode($report->getJob()->getProcess()->getExitCode());
             $dbReport->setRunAt(\DateTime::createFromFormat('U.u', number_format($report->getStartTime(), 6, '.', '')));
             $dbReport->setRunTime($report->getEndTime() - $report->getStartTime());
