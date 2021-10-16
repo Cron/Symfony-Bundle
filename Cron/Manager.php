@@ -12,6 +12,7 @@ namespace Cron\CronBundle\Cron;
 use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
+use Cron\CronBundle\Entity\CronReportRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Cron\Report\JobReport;
 use Doctrine\DBAL\Connection;
@@ -43,6 +44,14 @@ class Manager
     }
 
     /**
+     * @return CronReportRepository
+     */
+    protected function getReportRepo()
+    {
+        return $this->manager->getRepository(CronReport::class);
+    }
+
+    /**
      * @param JobReport[] $reports
      */
     public function saveReports(array $reports)
@@ -62,6 +71,40 @@ class Manager
             $this->manager->persist($dbReport);
         }
         $this->manager->flush();
+    }
+
+    /**
+     * @param int $days
+     */
+    public function truncateReports(int $days = 3)
+    {
+        $connection = $this->manager->getConnection();
+        if($connection instanceof Connection && false === $connection->ping()){
+            $connection->close();
+            $connection->connect();
+        }
+        
+        $queryBuilder = $this->getReportRepo()->createQueryBuilder('cr');
+
+        $dateToClear = (new \DateTime('today'))
+            ->modify("-{$days} days")
+            ->format('Y-m-d H:i:s');
+
+        $queryBuilder
+            ->delete(
+                CronReport::class,
+                'cr'
+            )
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->lte(
+                        'cr.runAt',
+                        $queryBuilder->expr()->literal($dateToClear)
+                    )
+                )
+            )
+            ->getQuery()
+            ->execute();
     }
 
     /**
