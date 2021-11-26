@@ -44,6 +44,12 @@ class CronReport
     protected $output;
 
     /**
+     * @ORM\Column(type="text")
+     * @var string $error
+     */
+    protected $error;
+
+    /**
      * @ORM\ManyToOne(targetEntity="CronJob", inversedBy="reports")
      * @ORM\JoinColumn(onDelete="CASCADE")
      * @var CronJob
@@ -94,6 +100,25 @@ class CronReport
     public function getOutput()
     {
         return $this->output;
+    }
+
+    /**
+     * @param string $error
+     * @return CronReport
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
     /**
