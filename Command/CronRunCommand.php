@@ -36,7 +36,7 @@ class CronRunCommand extends CronCommand
             ->addArgument('job', InputArgument::OPTIONAL, 'Run only this job (if enabled)')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force schedule the current job.')
             ->addOption('schedule_now', null, InputOption::VALUE_NONE, 'Temporary set the job schedule to now.')
-            ->addOption('script_name', null, InputOption::VALUE_OPTIONAL, 'Specify this to avoid guessing the script name to run the command in non-CLI context.');
+            ->addOption('script-name', null, InputOption::VALUE_OPTIONAL, 'Specify this to avoid guessing the script name to run the command in non-CLI context.');
     }
 
     /**
@@ -52,8 +52,8 @@ class CronRunCommand extends CronCommand
             $resolver = $this->getContainer()->get('cron.resolver');
         }
 
-        if($input->getParameterOption('--script_name') !== false) {
-            $resolver->setScriptName((string)$input->getParameterOption('--script_name'));
+        if($input->getParameterOption('--script-name') !== false) {
+            $resolver->setScriptName((string)$input->getParameterOption('--script-name'));
         }
 
         $cron->setResolver($resolver);
