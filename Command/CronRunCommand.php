@@ -61,7 +61,9 @@ class CronRunCommand extends CronCommand
         $time = microtime(true);
         $dbReport = $cron->run();
 
-        while ($cron->isRunning()) {}
+        while ($cron->isRunning()) {
+            sleep(0.1);
+        }
 
         $output->writeln('time: ' . (microtime(true) - $time));
 
@@ -97,7 +99,7 @@ class CronRunCommand extends CronCommand
         $resolver = new ArrayResolver();
 
         $job = new ShellJob();
-        $job->setCommand(escapeshellarg($phpExecutable) . ' ' . $rootDir . '/bin/console ' . $dbJob->getCommand());
+        $job->setCommand(escapeshellarg($phpExecutable) . ' --define memory_limit='.ini_get('memory_limit').' ' . $rootDir . '/bin/console ' . $dbJob->getCommand());
         $job->setSchedule(new CrontabSchedule($pattern));
         $job->raw = $dbJob;
 

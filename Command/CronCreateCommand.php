@@ -13,7 +13,9 @@ use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -27,7 +29,12 @@ class CronCreateCommand extends CronCommand
     protected function configure()
     {
         $this->setName('cron:create')
-            ->setDescription('Create a cron job');
+            ->setDescription('Create a cron job')
+            ->addOption('name', null, InputOption::VALUE_REQUIRED, 'The job name')
+            ->addOption('command', null, InputOption::VALUE_REQUIRED, 'The job command')
+            ->addOption('schedule', null, InputOption::VALUE_REQUIRED, 'The job schedule')
+            ->addOption('description', null, InputOption::VALUE_REQUIRED, 'The job description')
+            ->addOption('enabled', null, InputOption::VALUE_REQUIRED, 'Is the job enabled');
     }
 
     /**
@@ -37,48 +44,53 @@ class CronCreateCommand extends CronCommand
     {
         $job = new CronJob();
 
-        $output->writeln('');
-        $output->writeln('<info>The unique name how the job will be referenced.</info>');
-
-        $question = new Question('<question>Name:</question> ', false);
-
-        $name = $this->getQuestionHelper()->ask($input, $output, $question);
+        $name = $input->getOption('name');
+        if (is_null($name)) {
+            $output->writeln('');
+            $output->writeln('<info>The unique name how the job will be referenced.</info>');
+            $question = new Question('<question>Name:</question> ', false);
+            $name = $this->getQuestionHelper()->ask($input, $output, $question);
+        }
         $this->validateJobName($name);
         $job->setName($name);
 
-        $output->writeln('');
-        $output->writeln('<info>The command to execute. You may add extra arguments.</info>');
-
-        $question = new Question('<question>Command:</question> ', false);
-
-        $command = $this->getQuestionHelper()->ask($input, $output, $question);
+        $command = $input->getOption('command');
+        if (is_null($command)) {
+            $output->writeln('');
+            $output->writeln('<info>The command to execute. You may add extra arguments.</info>');
+            $question = new Question('<question>Command:</question> ', false);
+            $command = $this->getQuestionHelper()->ask($input, $output, $question);
+        }
         $this->validateCommand($command);
         $job->setCommand($command);
 
-        $output->writeln('');
-        $output->writeln('<info>The schedule in the crontab syntax.</info>');
-
-        $question = new Question('<question>Schedule:</question> ', false);
-
-        $schedule = $this->getQuestionHelper()->ask($input, $output, $question);
+        $schedule = $input->getOption('schedule');
+        if (is_null($schedule)) {
+            $output->writeln('');
+            $output->writeln('<info>The schedule in the crontab syntax.</info>');
+            $question = new Question('<question>Schedule:</question> ', false);
+            $schedule = $this->getQuestionHelper()->ask($input, $output, $question);
+        }
         $this->validateSchedule($schedule);
         $job->setSchedule($schedule);
 
-        $output->writeln('');
-        $output->writeln('<info>Some more information about the job.</info>');
-
-        $question = new Question('<question>Description:</question> ', false);
-
-        $description = $this->getQuestionHelper()->ask($input, $output, $question);
+        $description = $input->getOption('description');
+        if (is_null($description)) {
+            $output->writeln('');
+            $output->writeln('<info>Some more information about the job.</info>');
+            $question = new Question('<question>Description:</question> ', false);
+            $description = $this->getQuestionHelper()->ask($input, $output, $question);
+        }
         $job->setDescription($description);
 
-        $output->writeln('');
-        $output->writeln('<info>Should the cron be enabled.</info>');
-
-        $question = new ConfirmationQuestion('<question>Enable?</question> [y/n]: ', false, '/^(y)/i');
-
-        $enabled = $this->getQuestionHelper()->ask($input, $output, $question);
-        $job->setEnabled($enabled);
+        $enabled = $input->getOption('enabled');
+        if (is_null($enabled)) {
+            $output->writeln('');
+            $output->writeln('<info>Should the cron be enabled.</info>');
+            $question = new ConfirmationQuestion('<question>Enable?</question> [y/n]: ', false, '/^(y)/i');
+            $enabled = $this->getQuestionHelper()->ask($input, $output, $question);
+        }
+        $job->setEnabled(boolval($enabled));
 
         $this->getContainer()->get('cron.manager')
             ->saveJob($job);
