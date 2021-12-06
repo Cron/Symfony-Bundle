@@ -56,6 +56,11 @@ class Manager
      */
     public function saveReports(array $reports)
     {
+        $connection = $this->manager->getConnection();
+        if($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()){
+            $connection->close();
+            $connection->connect();
+        }
         foreach ($reports as $report) {
             $dbReport = new CronReport();
             $dbReport->setJob($report->getJob()->raw);
@@ -74,6 +79,11 @@ class Manager
      */
     public function truncateReports(int $days = 3)
     {        
+        $connection = $this->manager->getConnection();
+        if($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()){
+            $connection->close();
+            $connection->connect();
+        }
         $queryBuilder = $this->getReportRepo()->createQueryBuilder('cr');
 
         $dateToClear = (new \DateTime('today'))
