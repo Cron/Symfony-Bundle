@@ -39,8 +39,12 @@ class CronRunCommand extends CronCommand
             ->addOption('script-name', null, InputOption::VALUE_OPTIONAL, 'Specify this to avoid guessing the script name to run the command in non-CLI context.');
     }
 
+
     /**
-     * {@inheritdoc}
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

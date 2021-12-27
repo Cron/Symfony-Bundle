@@ -34,8 +34,12 @@ class CronStartCommand extends CronCommand
             ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.');
     }
 
+
     /**
-     * {@inheritdoc}
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

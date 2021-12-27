@@ -31,8 +31,12 @@ class CronDeleteCommand extends CronCommand
             ->addArgument('job', InputArgument::REQUIRED, 'The job to delete');
     }
 
+
     /**
-     * {@inheritdoc}
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
