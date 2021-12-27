@@ -37,8 +37,12 @@ class CronCreateCommand extends CronCommand
             ->addOption('enabled', null, InputOption::VALUE_REQUIRED, 'Is the job enabled');
     }
 
+
     /**
-     * {@inheritdoc}
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

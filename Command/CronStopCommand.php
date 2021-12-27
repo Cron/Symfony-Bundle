@@ -28,8 +28,12 @@ class CronStopCommand extends CronCommand
             ->setDescription('Stops cron scheduler');
     }
 
+
     /**
-     * {@inheritdoc}
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
