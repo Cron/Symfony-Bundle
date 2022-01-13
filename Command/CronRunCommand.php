@@ -66,7 +66,7 @@ class CronRunCommand extends CronCommand
         $dbReport = $cron->run();
 
         while ($cron->isRunning()) {
-            sleep(0.1);
+            time_nanosleep(0, 100000000);
         }
 
         $output->writeln('time: ' . (microtime(true) - $time));
