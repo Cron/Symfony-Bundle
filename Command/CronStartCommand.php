@@ -86,7 +86,9 @@ class CronStartCommand extends CronCommand
 
         while (true) {
             $now = microtime(true);
-            usleep((60 - ($now % 60) + (int) $now - $now) * 1e6);
+            $intNow = (int) $now;
+            $microseconds = (60 - ($intNow % 60) + $intNow - $now) * 1e6;
+            usleep((int) $microseconds);
 
             if (null !== $pidFile && !file_exists($pidFile)) {
                 break;
