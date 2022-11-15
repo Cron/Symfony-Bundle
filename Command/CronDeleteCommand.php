@@ -52,7 +52,13 @@ class CronDeleteCommand extends CronCommand
 
         $output->writeln(sprintf('<info>You are about to delete "%s".</info>', $job->getName()));
 
-        $question = new ConfirmationQuestion('<question>Delete this job</question> [N/y]: ', false, '/^(y)/i');
+        // Defaults to NO if input is interactive
+        // Defaults to YES otherwise
+        $question = new ConfirmationQuestion(
+            '<question>Delete this job</question> [N/y]: ',
+            $input->isInteractive(),
+            '/^(y)/i'
+        );
 
         if (!$this->getQuestionHelper()->ask($input, $output, $question)) {
             return;
