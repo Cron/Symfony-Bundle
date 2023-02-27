@@ -12,7 +12,7 @@ namespace Cron\CronBundle\Command;
 use Cron\Cron;
 use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
-use Cron\Job\ShellJob;
+use Cron\CronBundle\Job\ShellJobWrapper;
 use Cron\Resolver\ArrayResolver;
 use Cron\Schedule\CrontabSchedule;
 use Symfony\Component\Console\Input\InputArgument;
@@ -102,7 +102,7 @@ class CronRunCommand extends CronCommand
 
         $resolver = new ArrayResolver();
 
-        $job = new ShellJob();
+        $job = new ShellJobWrapper();
         $job->setCommand(escapeshellarg($phpExecutable) . ' --define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit').' ' . $rootDir . '/bin/console ' . $dbJob->getCommand());
         $job->setSchedule(new CrontabSchedule($pattern));
         $job->raw = $dbJob;
