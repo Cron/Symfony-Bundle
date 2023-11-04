@@ -10,6 +10,7 @@
 namespace Cron\CronBundle\Cron;
 
 use Cron\CronBundle\Entity\CronJob;
+use Cron\CronBundle\Job\ShellJobWrapper;
 use Cron\Job\JobInterface;
 use Cron\Job\ShellJob;
 use Cron\Resolver\ResolverInterface;
@@ -79,7 +80,7 @@ class Resolver implements ResolverInterface
      */
     protected function createJob(CronJob $dbJob)
     {
-        $job = new ShellJob();
+        $job = new ShellJobWrapper();
         $job->setCommand($this->commandBuilder->build($dbJob->getCommand(), $this->scriptName), $this->rootDir);
         $job->setSchedule(new CrontabSchedule($dbJob->getSchedule()));
         $job->raw = $dbJob;
