@@ -34,14 +34,7 @@ class CronStartCommand extends CronCommand
             ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.');
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('blocking')) {
             $output->writeln(sprintf('<info>%s</info>', 'Starting cron scheduler in blocking mode.'));
@@ -77,7 +70,7 @@ class CronStartCommand extends CronCommand
         return 0;
     }
 
-    private function scheduler(OutputInterface $output, $pidFile)
+    private function scheduler(OutputInterface $output, $pidFile): void
     {
         $input = new ArrayInput([]);
 

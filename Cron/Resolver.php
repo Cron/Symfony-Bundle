@@ -55,7 +55,7 @@ class Resolver implements ResolverInterface
      *
      * @return JobInterface[]
      */
-    public function resolve()
+    public function resolve(): array
     {
         $jobs = $this->manager->listEnabledJobs();
 
@@ -64,21 +64,16 @@ class Resolver implements ResolverInterface
 
     /**
      * Overrides the script name used by the command builder to build the command.
-     *
-     * @param string $scriptName
      */
-    public function setScriptName($scriptName)
+    public function setScriptName(string $scriptName): void
     {
         $this->scriptName = $scriptName;
     }
 
     /**
      * Transform a CronJon into a ShellJob.
-     *
-     * @param  CronJob  $dbJob
-     * @return ShellJob
      */
-    protected function createJob(CronJob $dbJob)
+    protected function createJob(CronJob $dbJob): ShellJob
     {
         $job = new ShellJobWrapper();
         $job->setCommand($this->commandBuilder->build($dbJob->getCommand(), $this->scriptName), $this->rootDir);

@@ -11,10 +11,11 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -24,21 +25,14 @@ class CronDeleteCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:delete')
             ->setDescription('Delete a cron job')
             ->addArgument('job', InputArgument::REQUIRED, 'The job to delete');
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $job = $this->queryJob($input->getArgument('job'));
 
@@ -61,7 +55,7 @@ class CronDeleteCommand extends CronCommand
         );
 
         if (!$this->getQuestionHelper()->ask($input, $output, $question)) {
-            return;
+            return 0;
         }
 
         $this->getContainer()->get('cron.manager')
@@ -72,20 +66,13 @@ class CronDeleteCommand extends CronCommand
         return 0;
     }
 
-    /**
-     * @param  string  $jobName
-     * @return CronJob
-     */
-    protected function queryJob($jobName)
+    protected function queryJob(string $jobName): CronJob
     {
         return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);
     }
 
-    /**
-     * @return QuestionHelper
-     */
-    private function getQuestionHelper()
+    private function getQuestionHelper(): HelperInterface
     {
         return $this->getHelperSet()->get('question');
     }

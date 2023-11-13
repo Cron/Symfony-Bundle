@@ -14,9 +14,9 @@ use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
 use Cron\CronBundle\Entity\CronReportRepository;
 use Cron\CronBundle\Job\ShellJobWrapper;
-use Doctrine\Persistence\ManagerRegistry;
 use Cron\Report\JobReport;
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -55,7 +55,7 @@ class Manager
     /**
      * @param JobReport[] $reports
      */
-    public function saveReports(array $reports)
+    public function saveReports(array $reports): void
     {
         $connection = $this->manager->getConnection();
         if($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()){
@@ -80,11 +80,8 @@ class Manager
         $this->manager->flush();
     }
 
-    /**
-     * @param int $days
-     */
-    public function truncateReports(int $days = 3)
-    {        
+    public function truncateReports(int $days = 3): void
+    {
         $connection = $this->manager->getConnection();
         if($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()){
             $connection->close();
@@ -116,7 +113,7 @@ class Manager
     /**
      * @return CronJob[]
      */
-    public function listJobs()
+    public function listJobs(): array
     {
         return $this->getJobRepo()
             ->findBy(array(), array(
@@ -127,7 +124,7 @@ class Manager
     /**
      * @return CronJob[]
      */
-    public function listEnabledJobs()
+    public function listEnabledJobs(): array
     {
         return $this->getJobRepo()
             ->findBy(array(
@@ -137,20 +134,13 @@ class Manager
                 ));
     }
 
-    /**
-     * @param CronJob $job
-     */
-    public function saveJob(CronJob $job)
+    public function saveJob(CronJob $job): void
     {
         $this->manager->persist($job);
         $this->manager->flush();
     }
 
-    /**
-     * @param  string  $name
-     * @return CronJob
-     */
-    public function getJobByName($name)
+    public function getJobByName(string $name): CronJob
     {
         return $this->getJobRepo()
             ->findOneBy(array(
@@ -158,10 +148,7 @@ class Manager
                 ));
     }
 
-    /**
-     * @param CronJob $job
-     */
-    public function deleteJob(CronJob $job)
+    public function deleteJob(CronJob $job): void
     {
         $this->manager->remove($job);
         $this->manager->flush();

@@ -28,14 +28,7 @@ class CronStopCommand extends CronCommand
             ->setDescription('Stops cron scheduler');
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.CronStartCommand::PID_FILE;
         if (!file_exists($pidFile)) {

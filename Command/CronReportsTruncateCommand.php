@@ -10,7 +10,6 @@
 namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,14 +34,7 @@ class CronReportsTruncateCommand extends CronCommand
             );
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = (int)$input->getArgument('days');
 

@@ -23,7 +23,7 @@ class CronDisableCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:disable')
             ->setDescription('Disable a cron job')
@@ -31,13 +31,7 @@ class CronDisableCommand extends CronCommand
     }
 
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $job = $this->queryJob($input->getArgument('job'));
 
@@ -55,11 +49,7 @@ class CronDisableCommand extends CronCommand
         return 0;
     }
 
-    /**
-     * @param  string  $jobName
-     * @return CronJob
-     */
-    protected function queryJob($jobName)
+    protected function queryJob(string $jobName): CronJob
     {
         return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);

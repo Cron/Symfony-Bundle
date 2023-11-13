@@ -18,7 +18,7 @@ abstract class CronCommand extends Command
         parent::__construct();
     }
 
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }

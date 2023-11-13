@@ -11,12 +11,12 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -26,7 +26,7 @@ class CronCreateCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:create')
             ->setDescription('Create a cron job')
@@ -37,14 +37,7 @@ class CronCreateCommand extends CronCommand
             ->addOption('enabled', null, InputOption::VALUE_REQUIRED, 'Is the job enabled');
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $job = new CronJob();
 
@@ -108,11 +101,9 @@ class CronCreateCommand extends CronCommand
     /**
      * Validate the job name.
      *
-     * @param  string                    $name
-     * @return string
      * @throws \InvalidArgumentException
      */
-    protected function validateJobName($name)
+    protected function validateJobName($name): string
     {
         if (!$name || strlen($name) == 0) {
             throw new \InvalidArgumentException('Please set a name.');
@@ -128,11 +119,9 @@ class CronCreateCommand extends CronCommand
     /**
      * Validate the command.
      *
-     * @param  string                    $command
-     * @return string
      * @throws \InvalidArgumentException
      */
-    protected function validateCommand($command)
+    protected function validateCommand(string $command): string
     {
         $parts = explode(' ', $command);
         $this->getApplication()->get((string) $parts[0]);
@@ -143,11 +132,9 @@ class CronCreateCommand extends CronCommand
     /**
      * Validate the schedule.
      *
-     * @param  string                    $schedule
-     * @return string
      * @throws \InvalidArgumentException
      */
-    protected function validateSchedule($schedule)
+    protected function validateSchedule(string $schedule): string
     {
         $this->getContainer()->get('cron.validator')
             ->validate($schedule);
@@ -155,20 +142,13 @@ class CronCreateCommand extends CronCommand
         return $schedule;
     }
 
-    /**
-     * @param  string  $jobName
-     * @return CronJob
-     */
-    protected function queryJob($jobName)
+    protected function queryJob(string $jobName): CronJob
     {
         return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);
     }
 
-    /**
-     * @return QuestionHelper
-     */
-    private function getQuestionHelper()
+    private function getQuestionHelper(): HelperInterface
     {
         return $this->getHelperSet()->get('question');
     }
