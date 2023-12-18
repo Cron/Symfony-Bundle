@@ -11,6 +11,7 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
+use InvalidArgumentException;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -101,16 +102,16 @@ class CronCreateCommand extends CronCommand
     /**
      * Validate the job name.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function validateJobName($name): string
     {
         if (!$name || strlen($name) == 0) {
-            throw new \InvalidArgumentException('Please set a name.');
+            throw new InvalidArgumentException('Please set a name.');
         }
 
         if ($this->queryJob($name)) {
-            throw new \InvalidArgumentException('Name already in use.');
+            throw new InvalidArgumentException('Name already in use.');
         }
 
         return $name;
@@ -119,12 +120,12 @@ class CronCreateCommand extends CronCommand
     /**
      * Validate the command.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function validateCommand(string $command): string
     {
         $parts = explode(' ', $command);
-        $this->getApplication()->get((string) $parts[0]);
+        $this->getApplication()->get($parts[0]);
 
         return $command;
     }
@@ -132,7 +133,7 @@ class CronCreateCommand extends CronCommand
     /**
      * Validate the schedule.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function validateSchedule(string $schedule): string
     {
@@ -142,7 +143,7 @@ class CronCreateCommand extends CronCommand
         return $schedule;
     }
 
-    protected function queryJob(string $jobName): CronJob
+    protected function queryJob(string $jobName): ?CronJob
     {
         return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);

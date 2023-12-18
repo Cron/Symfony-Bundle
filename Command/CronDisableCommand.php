@@ -11,6 +11,7 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,7 +37,7 @@ class CronDisableCommand extends CronCommand
         $job = $this->queryJob($input->getArgument('job'));
 
         if (!$job) {
-            throw new \InvalidArgumentException('Unknown job.');
+            throw new InvalidArgumentException('Unknown job.');
         }
 
         $job->setEnabled(false);
@@ -49,7 +50,7 @@ class CronDisableCommand extends CronCommand
         return 0;
     }
 
-    protected function queryJob(string $jobName): CronJob
+    protected function queryJob(string $jobName): ?CronJob
     {
         return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);

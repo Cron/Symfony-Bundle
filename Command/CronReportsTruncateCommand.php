@@ -22,7 +22,7 @@ class CronReportsTruncateCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:reports:truncate')
             ->setDescription('Trucate reports after given days')

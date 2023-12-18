@@ -10,13 +10,18 @@
 namespace Cron\CronBundle\Cron;
 
 use Cron\CronBundle\Entity\CronJob;
-use Cron\CronBundle\Entity\CronJobRepository;
 use Cron\CronBundle\Entity\CronReport;
-use Cron\CronBundle\Entity\CronReportRepository;
 use Cron\CronBundle\Job\ShellJobWrapper;
 use Cron\Report\JobReport;
+use DateTime;
+use DateTimeZone;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
+use Exception;
+use Throwable;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -24,9 +29,9 @@ use Doctrine\Persistence\ManagerRegistry;
 class Manager
 {
     /**
-     * @var ManagerRegistry
+     * @var ObjectManager
      */
-    protected $manager;
+    protected ObjectManager $manager;
 
     /**
      * @param ManagerRegistry $registry
@@ -37,31 +42,35 @@ class Manager
     }
 
     /**
-     * @return CronJobRepository
+     * @return EntityRepository|ObjectRepository
      */
-    protected function getJobRepo()
+    protected function getJobRepo(): EntityRepository|ObjectRepository
     {
         return $this->manager->getRepository(CronJob::class);
     }
 
     /**
-     * @return CronReportRepository
+     * @return EntityRepository|ObjectRepository
      */
-    protected function getReportRepo()
+    protected function getReportRepo(): EntityRepository|ObjectRepository
     {
         return $this->manager->getRepository(CronReport::class);
     }
 
     /**
      * @param JobReport[] $reports
+     * @throws Exception
      */
     public function saveReports(array $reports): void
     {
-        $connection = $this->manager->getConnection();
-        if($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()){
-            $connection->close();
-            $connection->connect();
-        }
+        try {
+            $connection = $this->manager->getConnection();
+            if ($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()) {
+                $connection->close();
+                $connection->connect();
+            }
+        } catch (Throwable){}
+
         foreach ($reports as $report) {
             $job = $report->getJob();
             if (! $job instanceof ShellJobWrapper) {
@@ -69,11 +78,11 @@ class Manager
             }
             $dbReport = new CronReport();
             $dbReport->setJob($job->raw);
-            $dbReport->setOutput(implode("\n", (array) $report->getOutput()));
-            $dbReport->setError(implode("\n", (array) $report->getError()));
+            $dbReport->setOutput(implode("\n", is_array($output = $report->getOutput()) ? $output : [$output]));
+            $dbReport->setError(implode("\n", is_array($error = $report->getError()) ? $error : [$error]));
             $dbReport->setExitCode($report->getJob()->getProcess()->getExitCode());
-            $dbReport->setRunAt(\DateTime::createFromFormat('U.u', number_format($report->getStartTime(), 6, '.', '')));
-            $dbReport->getRunAt()->setTimezone(new \DateTimeZone(getenv('TZ') ?: date_default_timezone_get()));
+            $dbReport->setRunAt(DateTime::createFromFormat('U.u', number_format((int) $report->getStartTime(), 6, '.', '')));
+            $dbReport->getRunAt()->setTimezone(new DateTimeZone(getenv('TZ') ?: date_default_timezone_get()));
             $dbReport->setRunTime($report->getEndTime() - $report->getStartTime());
             $this->manager->persist($dbReport);
         }
@@ -82,15 +91,18 @@ class Manager
 
     public function truncateReports(int $days = 3): void
     {
-        $connection = $this->manager->getConnection();
-        if($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()){
-            $connection->close();
-            $connection->connect();
-        }
+        try {
+            $connection = $this->manager->getConnection();
+            if ($connection instanceof Connection && true === method_exists($connection, 'ping') && false === $connection->ping()) {
+                $connection->close();
+                $connection->connect();
+            }
+        } catch (Throwable){}
+
         $queryBuilder = $this->getReportRepo()->createQueryBuilder('cr');
 
-        $dateToClear = (new \DateTime('today'))
-            ->modify("-{$days} days")
+        $dateToClear = (new DateTime('today'))
+            ->modify("-$days days")
             ->format('Y-m-d H:i:s');
 
         $queryBuilder
@@ -140,7 +152,7 @@ class Manager
         $this->manager->flush();
     }
 
-    public function getJobByName(string $name): CronJob
+    public function getJobByName(string $name): ?CronJob
     {
         return $this->getJobRepo()
             ->findOneBy(array(

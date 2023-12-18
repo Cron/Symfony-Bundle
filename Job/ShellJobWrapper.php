@@ -9,7 +9,7 @@ use Cron\Job\ShellJob;
 class ShellJobWrapper extends ShellJob
 {
     /**
-     * @var CronJob
+     * @var CronJob|null
      */
-    public $raw;
+    public ?CronJob $raw = null;
 }

@@ -11,6 +11,7 @@ namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
 use Cron\CronBundle\Entity\CronJob;
+use InvalidArgumentException;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,11 +38,11 @@ class CronDeleteCommand extends CronCommand
         $job = $this->queryJob($input->getArgument('job'));
 
         if (!$job) {
-            throw new \InvalidArgumentException('Unknown job.');
+            throw new InvalidArgumentException('Unknown job.');
         }
 
         if ($job->getEnabled()) {
-            throw new \InvalidArgumentException('The job should be disabled first.');
+            throw new InvalidArgumentException('The job should be disabled first.');
         }
 
         $output->writeln(sprintf('<info>You are about to delete "%s".</info>', $job->getName()));
@@ -66,7 +67,7 @@ class CronDeleteCommand extends CronCommand
         return 0;
     }
 
-    protected function queryJob(string $jobName): CronJob
+    protected function queryJob(string $jobName): ?CronJob
     {
         return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);

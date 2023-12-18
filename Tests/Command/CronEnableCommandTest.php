@@ -9,6 +9,9 @@
  */
 
 use Cron\CronBundle\Command\CronEnableCommand;
+use Cron\CronBundle\Cron\Manager;
+use Cron\CronBundle\Entity\CronJob;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -17,9 +20,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class CronEnableCommandTest extends WebTestCase
 {
-    public function testUnknownJob()
+    public function testUnknownJob(): void
     {
-        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+        $manager = $this->getMockBuilder(Manager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager
@@ -28,7 +31,7 @@ class CronEnableCommandTest extends WebTestCase
 
         $command = $this->getCommand($manager);
 
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
@@ -36,13 +39,13 @@ class CronEnableCommandTest extends WebTestCase
         ));
     }
 
-    public function testEnable()
+    public function testEnable(): void
     {
-        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+        $manager = $this->getMockBuilder(Manager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $job = new \Cron\CronBundle\Entity\CronJob();
+        $job = new CronJob();
         $manager
             ->expects($this->once())
             ->method('getJobByName')
@@ -56,23 +59,23 @@ class CronEnableCommandTest extends WebTestCase
         ));
 
         $this->assertEquals(0, $commandTester->getStatusCode());
-        $this->assertEquals(true, $job->getEnabled());
+        $this->assertTrue($job->getEnabled());
     }
 
-    public function testNoJobArgument()
+    public function testNoJobArgument(): void
     {
-        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+        $manager = $this->getMockBuilder(Manager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $command = $this->getCommand($manager);
 
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array());
     }
 
-    protected function getCommand($manager)
+    protected function getCommand(Manager $manager): Command
     {
         $kernel = $this->createKernel();
         $kernel->boot();

@@ -15,7 +15,6 @@ use Cron\Job\JobInterface;
 use Cron\Job\ShellJob;
 use Cron\Resolver\ResolverInterface;
 use Cron\Schedule\CrontabSchedule;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -23,31 +22,16 @@ use Symfony\Component\Process\PhpExecutableFinder;
 class Resolver implements ResolverInterface
 {
     /**
-     * @var Manager
-     */
-    private $manager;
-
-    /**
-     * @var CommandBuilder
-     */
-    private $commandBuilder;
-
-    /**
      * @var string
      */
-    private $rootDir;
+    private string $scriptName;
 
-    /**
-     * @var string
-     */
-    private $scriptName;
-
-
-    public function __construct(Manager $manager, CommandBuilder $commandBuilder, $rootDir)
+    public function __construct(
+        private readonly Manager        $manager,
+        private readonly CommandBuilder $commandBuilder,
+        private readonly string $rootDir
+    )
     {
-        $this->manager = $manager;
-        $this->commandBuilder = $commandBuilder;
-        $this->rootDir = $rootDir;
     }
 
     /**

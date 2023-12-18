@@ -19,17 +19,17 @@ class CommandBuilder
     /**
      * @var string
      */
-    private $environment;
+    private string $environment;
 
     /**
-     * @var string
+     * @var string|false
      */
-    private $phpExecutable;
+    private string|false $phpExecutable;
 
     /**
      * @param string $environment
      */
-    public function __construct($environment)
+    public function __construct(string $environment)
     {
         $this->environment = $environment;
 

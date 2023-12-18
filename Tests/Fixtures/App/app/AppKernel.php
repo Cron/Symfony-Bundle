@@ -1,22 +1,29 @@
 <?php
 namespace Cron\CronBundle\Tests\Fixtures\App\app;
 
+use Cron\CronBundle\CronCronBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return array(
-          new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-          new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+          new FrameworkBundle(),
+          new DoctrineBundle(),
 
-          new \Cron\CronBundle\CronCronBundle(),
+          new CronCronBundle(),
         );
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    /**
+     * @throws Exception
+     */
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__.'/config/config_test.yml');
     }
@@ -24,7 +31,7 @@ class AppKernel extends Kernel
     /**
      * @return string
      */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir().'/CronSymfonyBundle/cache';
     }
@@ -32,7 +39,7 @@ class AppKernel extends Kernel
     /**
      * @return string
      */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir().'/CronSymfonyBundle/logs';
     }

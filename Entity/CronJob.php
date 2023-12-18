@@ -2,6 +2,7 @@
 
 namespace Cron\CronBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -9,59 +10,59 @@ use Doctrine\Common\Collections\ArrayCollection;
  * CronJob
  *
  * @ORM\Table(name="cron_job", uniqueConstraints={@ORM\UniqueConstraint(name="un_name", columns={"name"})})
- * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronJobRepository")
+ * @ORM\Entity(repositoryClass="Cron\CronBundle\Repository\CronJobRepository")
  */
 class CronJob
 {
     /**
-     * @var integer
+     * @var integer|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=191)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="command", type="string", length=1024)
      */
-    private $command;
+    private ?string $command = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="schedule", type="string", length=191)
      */
-    private $schedule;
+    private ?string $schedule = null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="description", type="string", length=191)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    private ?bool $enabled = null;
 
     /**
      * @ORM\OneToMany(targetEntity="CronReport", mappedBy="job", cascade={"remove"})
      * @var ArrayCollection
      */
-    protected $reports;
+    protected Collection $reports;
 
     public function __construct()
     {
@@ -71,9 +72,9 @@ class CronJob
     /**
      * Get id
      *
-     * @return integer
+     * @return integer|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -81,10 +82,10 @@ class CronJob
     /**
      * Set name
      *
-     * @param  string  $name
+     * @param string|null $name
      * @return CronJob
      */
-    public function setName($name)
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -94,18 +95,18 @@ class CronJob
     /**
      * Get name
      *
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $command
+     * @param string|null $command
      * @return CronJob
      */
-    public function setCommand($command)
+    public function setCommand(?string $command): static
     {
         $this->command = $command;
 
@@ -113,18 +114,18 @@ class CronJob
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCommand()
+    public function getCommand(): ?string
     {
         return $this->command;
     }
 
     /**
-     * @param string $schedule
+     * @param string|null $schedule
      * @return CronJob
      */
-    public function setSchedule($schedule)
+    public function setSchedule(?string $schedule): static
     {
         $this->schedule = $schedule;
 
@@ -132,9 +133,9 @@ class CronJob
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSchedule()
+    public function getSchedule(): ?string
     {
         return $this->schedule;
     }
@@ -142,10 +143,10 @@ class CronJob
     /**
      * Set description
      *
-     * @param  string  $description
+     * @param string|null $description
      * @return CronJob
      */
-    public function setDescription($description)
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -155,9 +156,9 @@ class CronJob
     /**
      * Get description
      *
-     * @return string
+     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -165,10 +166,10 @@ class CronJob
     /**
      * Set enabled
      *
-     * @param  boolean $enabled
+     * @param boolean|null $enabled
      * @return CronJob
      */
-    public function setEnabled($enabled)
+    public function setEnabled(?bool $enabled): static
     {
         $this->enabled = $enabled;
 
@@ -178,17 +179,17 @@ class CronJob
     /**
      * Get enabled
      *
-     * @return boolean
+     * @return boolean|null
      */
-    public function getEnabled()
+    public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return Collection
      */
-    public function getReports()
+    public function getReports(): Collection
     {
         return $this->reports;
     }

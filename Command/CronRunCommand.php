@@ -29,7 +29,7 @@ class CronRunCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:run')
             ->setDescription('Runs any currently schedule cron jobs')
@@ -73,7 +73,7 @@ class CronRunCommand extends CronCommand
     /**
      * @throws \InvalidArgumentException
      */
-    protected function getJobResolver(string $jobName, bool $force = false, $schedule_now = false): ArrayResolver
+    protected function getJobResolver(string $jobName, bool $force = false, bool $schedule_now = false): ArrayResolver
     {
         $dbJob = $this->queryJob($jobName);
 
@@ -102,11 +102,9 @@ class CronRunCommand extends CronCommand
         return $resolver;
     }
 
-    protected function queryJob(string $jobName): CronJob
+    protected function queryJob(string $jobName): ?CronJob
     {
-        $job = $this->getContainer()->get('cron.manager')
+        return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);
-
-        return $job;
     }
 }

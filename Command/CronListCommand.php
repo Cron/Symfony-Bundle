@@ -22,7 +22,7 @@ class CronListCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:list')
             ->setDescription('List all available crons');
