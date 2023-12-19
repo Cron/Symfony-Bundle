@@ -22,9 +22,9 @@ use Cron\Schedule\CrontabSchedule;
 class Resolver implements ResolverInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $scriptName;
+    private ?string $scriptName = null;
 
     public function __construct(
         private readonly Manager        $manager,
