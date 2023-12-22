@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Cron\CronBundle\Tests\Fixtures\App\app;
 
 use Cron\CronBundle\CronCronBundle;

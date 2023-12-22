@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -8,9 +8,13 @@
  * file that was distributed with this source code.
  */
 
+namespace Cron\CronBundle\Tests\Command;
+
 use Cron\CronBundle\Command\CronDisableCommand;
 use Cron\CronBundle\Cron\Manager;
 use Cron\CronBundle\Entity\CronJob;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

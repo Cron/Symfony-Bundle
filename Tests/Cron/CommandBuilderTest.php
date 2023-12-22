@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -8,8 +8,9 @@
  * file that was distributed with this source code.
  */
 
+namespace Cron\CronBundle\Tests\Cron;
+
 use Cron\CronBundle\Cron\CommandBuilder;
-use Cron\CronBundle\Cron\Manager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
@@ -19,7 +20,7 @@ class CommandBuilderTest extends WebTestCase
     public function testRenderEnvironment()
     {
         $env = rand();
-        $builder = new CommandBuilder($env);
+        $builder = new CommandBuilder((string) $env);
 
         $this->assertRegExp(sprintf('/--env=%s$/', $env), $builder->build(''));
     }

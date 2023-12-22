@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Cron\CronBundle\Tests\Cron;
+
 use Cron\CronBundle\Cron\Manager;
 use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Job\ShellJobWrapper;
@@ -15,6 +17,7 @@ use Cron\Report\JobReport;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

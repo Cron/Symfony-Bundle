@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -40,7 +40,7 @@ class CronStopCommand extends CronCommand
             throw new RuntimeException('This command needs the pcntl extension to run.');
         }
 
-        if (!posix_kill(file_get_contents($pidFile), SIGINT)) {
+        if (!posix_kill((int) file_get_contents($pidFile), SIGINT)) {
             if (!unlink($pidFile)) {
                 throw new RuntimeException('Unable to stop scheduler.');
             }
