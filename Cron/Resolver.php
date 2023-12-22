@@ -21,9 +21,6 @@ use Cron\Schedule\CrontabSchedule;
  */
 class Resolver implements ResolverInterface
 {
-    /**
-     * @var string|null
-     */
     private ?string $scriptName = null;
 
     public function __construct(

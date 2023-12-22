@@ -2,66 +2,37 @@
 
 namespace Cron\CronBundle\Entity;
 
+use Cron\CronBundle\Repository\CronJobRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * CronJob
- *
- * @ORM\Table(name="cron_job", uniqueConstraints={@ORM\UniqueConstraint(name="un_name", columns={"name"})})
- * @ORM\Entity(repositoryClass="Cron\CronBundle\Repository\CronJobRepository")
- */
+#[ORM\Table('cron_job')]
+#[ORM\UniqueConstraint('un_name', ['name'])]
+#[ORM\Entity(CronJobRepository::class)]
 class CronJob
 {
-    /**
-     * @var integer|null
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column('id')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue('AUTO')]
     private ?int $id = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", length=191)
-     */
+    #[ORM\Column('name', length: 191)]
     private ?string $name = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="command", type="string", length=1024)
-     */
+    #[ORM\Column('command', length: 1024)]
     private ?string $command = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="schedule", type="string", length=191)
-     */
+    #[ORM\Column('schedule', length: 191)]
     private ?string $schedule = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="description", type="string", length=191)
-     */
+    #[ORM\Column('description', length: 191)]
     private ?string $description = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="enabled", type="boolean")
-     */
+    #[ORM\Column('enabled')]
     private ?bool $enabled = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="CronReport", mappedBy="job", cascade={"remove"})
-     * @var ArrayCollection
-     */
+    #[ORM\OneToMany('job', CronReport::class, ['remove'])]
     protected Collection $reports;
 
     public function __construct()
@@ -71,8 +42,6 @@ class CronJob
 
     /**
      * Get id
-     *
-     * @return integer|null
      */
     public function getId(): ?int
     {
@@ -81,9 +50,6 @@ class CronJob
 
     /**
      * Set name
-     *
-     * @param string|null $name
-     * @return CronJob
      */
     public function setName(?string $name): static
     {
@@ -94,8 +60,6 @@ class CronJob
 
     /**
      * Get name
-     *
-     * @return string|null
      */
     public function getName(): ?string
     {
@@ -103,8 +67,7 @@ class CronJob
     }
 
     /**
-     * @param string|null $command
-     * @return CronJob
+     * Set command
      */
     public function setCommand(?string $command): static
     {
@@ -114,7 +77,7 @@ class CronJob
     }
 
     /**
-     * @return string|null
+     * Get command
      */
     public function getCommand(): ?string
     {
@@ -122,8 +85,7 @@ class CronJob
     }
 
     /**
-     * @param string|null $schedule
-     * @return CronJob
+     * Set schedule
      */
     public function setSchedule(?string $schedule): static
     {
@@ -133,7 +95,7 @@ class CronJob
     }
 
     /**
-     * @return string|null
+     * Get schedule
      */
     public function getSchedule(): ?string
     {
@@ -142,9 +104,6 @@ class CronJob
 
     /**
      * Set description
-     *
-     * @param string|null $description
-     * @return CronJob
      */
     public function setDescription(?string $description): static
     {
@@ -155,8 +114,6 @@ class CronJob
 
     /**
      * Get description
-     *
-     * @return string|null
      */
     public function getDescription(): ?string
     {
@@ -165,9 +122,6 @@ class CronJob
 
     /**
      * Set enabled
-     *
-     * @param boolean|null $enabled
-     * @return CronJob
      */
     public function setEnabled(?bool $enabled): static
     {
@@ -178,17 +132,12 @@ class CronJob
 
     /**
      * Get enabled
-     *
-     * @return boolean|null
      */
     public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @return Collection
-     */
     public function getReports(): Collection
     {
         return $this->reports;

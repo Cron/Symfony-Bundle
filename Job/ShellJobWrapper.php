@@ -8,8 +8,5 @@ use Cron\Job\ShellJob;
 
 class ShellJobWrapper extends ShellJob
 {
-    /**
-     * @var CronJob|null
-     */
     public ?CronJob $raw = null;
 }

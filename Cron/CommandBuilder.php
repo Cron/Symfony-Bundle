@@ -16,19 +16,10 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class CommandBuilder
 {
-    /**
-     * @var string
-     */
     private string $environment;
 
-    /**
-     * @var string|false
-     */
     private string|false $phpExecutable;
 
-    /**
-     * @param string $environment
-     */
     public function __construct(string $environment)
     {
         $this->environment = $environment;
@@ -37,7 +28,7 @@ class CommandBuilder
         $this->phpExecutable = $finder->find();
     }
 
-    public function build(string $command, $scriptName = null): string
+    public function build(string $command, ?string $scriptName = null): string
     {
         return sprintf('%s %s %s %s --env=%s', $this->phpExecutable, ' --define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit'), $scriptName ?? $_SERVER['SCRIPT_NAME'], $command, $this->environment);
     }

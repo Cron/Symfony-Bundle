@@ -2,62 +2,39 @@
 
 namespace Cron\CronBundle\Entity;
 
+use Cron\CronBundle\Repository\CronReportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CronReport
- *
- * @ORM\Table(name="cron_report")
- * @ORM\Entity(repositoryClass="Cron\CronBundle\Repository\CronReportRepository")
- */
+#[ORM\Table('cron_report')]
+#[ORM\Entity(CronReportRepository::class)]
 class CronReport
 {
-    /**
-     * @var integer|null
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column('id')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue('AUTO')]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(name="run_at", type="datetime")
-     * @var \DateTime|null
-     */
+    #[ORM\Column('run_at', 'datetime')]
     protected ?\DateTime $runAt = null;
-    /**
-     * @ORM\Column(name="run_time", type="float")
-     * @var float|null
-     */
+
+    #[ORM\Column('run_time')]
     protected ?float $runTime = null;
 
-    /**
-     * @ORM\Column(name="exit_code", type="integer")
-     * @var integer|null
-     */
+    #[ORM\Column('exit_code')]
     protected ?int $exitCode = null;
-    /**
-     * @ORM\Column(type="text")
-     * @var string|null
-     */
+
+    #[ORM\Column('output', 'text')]
     protected ?string $output = null;
 
-    /**
-     * @ORM\Column(type="text")
-     * @var string|null
-     */
+    #[ORM\Column('error', 'text')]
     protected ?string $error = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="CronJob", inversedBy="reports")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     * @var CronJob|null
-     */
+    #[ORM\ManyToOne(CronJob::class, inversedBy: 'reports')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     protected ?CronJob $job = null;
 
     /**
-     * @return int|null
+     * Get id
      */
     public function getId(): ?int
     {
@@ -65,8 +42,7 @@ class CronReport
     }
 
     /**
-     * @param CronJob|null $job
-     * @return CronReport
+     * Set job
      */
     public function setJob(?CronJob $job): static
     {
@@ -76,7 +52,7 @@ class CronReport
     }
 
     /**
-     * @return CronJob|null
+     * Get job
      */
     public function getJob(): ?CronJob
     {
@@ -84,8 +60,7 @@ class CronReport
     }
 
     /**
-     * @param string|null $output
-     * @return CronReport
+     * Set output
      */
     public function setOutput(?string $output): static
     {
@@ -95,7 +70,7 @@ class CronReport
     }
 
     /**
-     * @return string|null
+     * Get output
      */
     public function getOutput(): ?string
     {
@@ -103,8 +78,7 @@ class CronReport
     }
 
     /**
-     * @param string|null $error
-     * @return CronReport
+     * Set error
      */
     public function setError(?string $error): static
     {
@@ -114,7 +88,7 @@ class CronReport
     }
 
     /**
-     * @return string|null
+     * Get error
      */
     public function getError(): ?string
     {
@@ -122,8 +96,7 @@ class CronReport
     }
 
     /**
-     * @param int|null $exitCode
-     * @return CronReport
+     * Set exit code
      */
     public function setExitCode(?int $exitCode): static
     {
@@ -133,7 +106,7 @@ class CronReport
     }
 
     /**
-     * @return int|null
+     * Get exit code
      */
     public function getExitCode(): ?int
     {
@@ -141,8 +114,7 @@ class CronReport
     }
 
     /**
-     * @param \DateTime|null $runAt
-     * @return CronReport
+     * Set run at
      */
     public function setRunAt(?\DateTime $runAt): static
     {
@@ -152,7 +124,7 @@ class CronReport
     }
 
     /**
-     * @return \DateTime|null
+     * Get run at
      */
     public function getRunAt(): ?\DateTime
     {
@@ -160,8 +132,7 @@ class CronReport
     }
 
     /**
-     * @param float|null $runTime
-     * @return CronReport
+     * Set run time
      */
     public function setRunTime(?float $runTime): static
     {
@@ -171,7 +142,7 @@ class CronReport
     }
 
     /**
-     * @return float|null
+     * Get run time
      */
     public function getRunTime(): ?float
     {

@@ -104,7 +104,7 @@ class CronCreateCommand extends CronCommand
      *
      * @throws InvalidArgumentException
      */
-    protected function validateJobName($name): string
+    protected function validateJobName(?string $name): string
     {
         if (!$name || strlen($name) == 0) {
             throw new InvalidArgumentException('Please set a name.');

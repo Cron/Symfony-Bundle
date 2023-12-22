@@ -28,30 +28,18 @@ use Throwable;
  */
 class Manager
 {
-    /**
-     * @var ObjectManager
-     */
     protected ObjectManager $manager;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManagerForClass(CronJob::class);
     }
 
-    /**
-     * @return EntityRepository|ObjectRepository
-     */
     protected function getJobRepo(): EntityRepository|ObjectRepository
     {
         return $this->manager->getRepository(CronJob::class);
     }
 
-    /**
-     * @return EntityRepository|ObjectRepository
-     */
     protected function getReportRepo(): EntityRepository|ObjectRepository
     {
         return $this->manager->getRepository(CronReport::class);
