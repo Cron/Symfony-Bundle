@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -15,39 +15,20 @@ use Cron\Job\JobInterface;
 use Cron\Job\ShellJob;
 use Cron\Resolver\ResolverInterface;
 use Cron\Schedule\CrontabSchedule;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
 class Resolver implements ResolverInterface
 {
-    /**
-     * @var Manager
-     */
-    private $manager;
+    private ?string $scriptName = null;
 
-    /**
-     * @var CommandBuilder
-     */
-    private $commandBuilder;
-
-    /**
-     * @var string
-     */
-    private $rootDir;
-
-    /**
-     * @var string
-     */
-    private $scriptName;
-
-
-    public function __construct(Manager $manager, CommandBuilder $commandBuilder, $rootDir)
+    public function __construct(
+        private readonly Manager        $manager,
+        private readonly CommandBuilder $commandBuilder,
+        private readonly string $rootDir
+    )
     {
-        $this->manager = $manager;
-        $this->commandBuilder = $commandBuilder;
-        $this->rootDir = $rootDir;
     }
 
     /**
@@ -55,7 +36,7 @@ class Resolver implements ResolverInterface
      *
      * @return JobInterface[]
      */
-    public function resolve()
+    public function resolve(): array
     {
         $jobs = $this->manager->listEnabledJobs();
 
@@ -64,21 +45,16 @@ class Resolver implements ResolverInterface
 
     /**
      * Overrides the script name used by the command builder to build the command.
-     *
-     * @param string $scriptName
      */
-    public function setScriptName($scriptName)
+    public function setScriptName(string $scriptName): void
     {
         $this->scriptName = $scriptName;
     }
 
     /**
      * Transform a CronJon into a ShellJob.
-     *
-     * @param  CronJob  $dbJob
-     * @return ShellJob
      */
-    protected function createJob(CronJob $dbJob)
+    protected function createJob(CronJob $dbJob): ShellJob
     {
         $job = new ShellJobWrapper();
         $job->setCommand($this->commandBuilder->build($dbJob->getCommand(), $this->scriptName), $this->rootDir);

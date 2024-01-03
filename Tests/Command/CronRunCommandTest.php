@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -8,6 +8,13 @@
  * file that was distributed with this source code.
  */
 
+namespace Cron\CronBundle\Tests\Command;
+
+use Cron\CronBundle\Command\CronRunCommand;
+use Cron\CronBundle\Cron\Manager;
+use Cron\CronBundle\Cron\Resolver;
+use Cron\CronBundle\Job\ShellJobWrapper;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -18,7 +25,7 @@ class CronRunCommandTest extends WebTestCase
 {
     public function testNoJobs()
     {
-        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+        $manager = $this->getMockBuilder(Manager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager
@@ -26,7 +33,7 @@ class CronRunCommandTest extends WebTestCase
             ->method('saveReports')
             ->with($this->isType('array'));
 
-        $resolver = $this->getMockBuilder('Cron\CronBundle\Cron\Resolver')
+        $resolver = $this->getMockBuilder(Resolver::class)
             ->disableOriginalConstructor()
             ->getMock();
         $resolver
@@ -44,7 +51,7 @@ class CronRunCommandTest extends WebTestCase
 
     public function testOneJob()
     {
-        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+        $manager = $this->getMockBuilder(Manager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager
@@ -52,9 +59,9 @@ class CronRunCommandTest extends WebTestCase
             ->method('saveReports')
             ->with($this->isType('array'));
 
-        $job = new \Cron\Job\ShellJob();
+        $job = new ShellJobWrapper();
 
-        $resolver = $this->getMockBuilder('Cron\CronBundle\Cron\Resolver')
+        $resolver = $this->getMockBuilder(Resolver::class)
             ->disableOriginalConstructor()
             ->getMock();
         $resolver
@@ -75,10 +82,10 @@ class CronRunCommandTest extends WebTestCase
     public function testNamedJob()
     {
         $this->expectException('InvalidArgumentException');
-        $manager = $this->getMockBuilder('Cron\CronBundle\Cron\Manager')
+        $manager = $this->getMockBuilder(Manager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $resolver = $this->getMockBuilder('Cron\CronBundle\Cron\Resolver')
+        $resolver = $this->getMockBuilder(Resolver::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -92,7 +99,7 @@ class CronRunCommandTest extends WebTestCase
         $this->assertStringContainsString('time:', $commandTester->getDisplay());
     }
 
-    protected function getCommand($manager, $resolver)
+    protected function getCommand(Manager $manager, Resolver $resolver): Command
     {
         $kernel = $this->createKernel();
         $kernel->boot();
@@ -100,7 +107,7 @@ class CronRunCommandTest extends WebTestCase
         $kernel->getContainer()->set('cron.resolver', $resolver);
 
         $application = new Application($kernel);
-        $application->add(new \Cron\CronBundle\Command\CronRunCommand($kernel->getContainer()));
+        $application->add(new CronRunCommand($kernel->getContainer()));
 
         return $application->find('cron:run');
     }

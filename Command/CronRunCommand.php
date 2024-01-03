@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -29,7 +29,7 @@ class CronRunCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:run')
             ->setDescription('Runs any currently schedule cron jobs')
@@ -39,14 +39,7 @@ class CronRunCommand extends CronCommand
             ->addOption('script-name', null, InputOption::VALUE_OPTIONAL, 'Specify this to avoid guessing the script name to run the command in non-CLI context.');
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $cron = new Cron();
         $cron->setExecutor($this->getContainer()->get('cron.executor'));
@@ -78,12 +71,9 @@ class CronRunCommand extends CronCommand
     }
 
     /**
-     * @param  string                    $jobName
-     * @param  bool                      $force
-     * @return ArrayResolver
      * @throws \InvalidArgumentException
      */
-    protected function getJobResolver($jobName, $force = false, $schedule_now = false)
+    protected function getJobResolver(string $jobName, bool $force = false, bool $schedule_now = false): ArrayResolver
     {
         $dbJob = $this->queryJob($jobName);
 
@@ -112,15 +102,9 @@ class CronRunCommand extends CronCommand
         return $resolver;
     }
 
-    /**
-     * @param  string  $jobName
-     * @return CronJob
-     */
-    protected function queryJob($jobName)
+    protected function queryJob(string $jobName): ?CronJob
     {
-        $job = $this->getContainer()->get('cron.manager')
+        return $this->getContainer()->get('cron.manager')
             ->getJobByName($jobName);
-
-        return $job;
     }
 }

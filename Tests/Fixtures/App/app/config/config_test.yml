@@ -4,7 +4,7 @@ imports:
 framework:
     test: ~
     session:
-        storage_id: session.storage.filesystem
+        handler_id: session.handler.native_file
 
 services:
     # Override for testing, otherwise the test CommandBuilderTest::testEnv fails

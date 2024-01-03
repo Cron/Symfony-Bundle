@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -8,12 +8,23 @@
  * file that was distributed with this source code.
  */
 
+namespace Cron\CronBundle\Tests\Cron;
+
 use Cron\CronBundle\Cron\Manager;
+use Cron\CronBundle\Entity\CronJob;
+use Cron\CronBundle\Job\ShellJobWrapper;
+use Cron\Report\JobReport;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectManager;
+use Exception;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dries De Peuter <dries@nousefreak.be>
  */
-class ManagerTest extends \PHPUnit\Framework\TestCase
+class ManagerTest extends TestCase
 {
     public function testListJobs()
     {
@@ -31,7 +42,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($findByArguments, $manager->listEnabledJobs());
     }
 
-    public function getJobByName()
+    public function getJobByName(): void
     {
         $manager = $this->getManagerWithRepo('findOneBy');
         $jobName = 'testJobName';
@@ -40,6 +51,9 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($findByArguments, $manager->getJobByName($jobName));
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSaveReportsEmpty()
     {
         $entityManager = $this->buildEm();
@@ -58,6 +72,9 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $manager->saveReports(array());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSaveReports()
     {
         $entityManager = $this->buildEm();
@@ -76,11 +93,10 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $manager = $this->getManager($registry);
 
-        $job = new \Cron\Job\ShellJob();
+        $job = new ShellJobWrapper();
         $job->setCommand('ls');
-        $job->raw = '';
 
-        $report = $this->getMockBuilder('Cron\Report\JobReport')
+        $report = $this->getMockBuilder(JobReport::class)
             ->setConstructorArgs(array($job))
             ->getMock();
 
@@ -92,7 +108,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         $report->expects($this->once())
             ->method('getEndTime');
 
-        $manager->saveReports(array($report));
+        $manager->saveReports([$report]);
     }
 
     public function testDeleteJob()
@@ -113,7 +129,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $manager = $this->getManager($registry);
 
-        $manager->deleteJob(new \Cron\CronBundle\Entity\CronJob());
+        $manager->deleteJob(new CronJob());
     }
 
     public function testSaveJob()
@@ -134,10 +150,10 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $manager = $this->getManager($registry);
 
-        $manager->saveJob(new \Cron\CronBundle\Entity\CronJob());
+        $manager->saveJob(new CronJob());
     }
 
-    protected function getManagerWithRepo($repoCall)
+    protected function getManagerWithRepo($repoCall): Manager
     {
         $jobRepo = $this->buildRepo();
         $jobRepo
@@ -166,31 +182,29 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         return $this->getManager($registry);
     }
 
-    protected function buildRepo()
+    protected function buildRepo(): MockObject
     {
-        return $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+        return $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    protected function buildEm()
+    protected function buildEm(): MockObject
     {
-        return $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+        return $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    protected function buildRegistry()
+    protected function buildRegistry(): MockObject
     {
-        return $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
+        return $this->getMockBuilder(Registry::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    protected function getManager($registry)
+    protected function getManager($registry): Manager
     {
-        $manager = new Manager($registry);
-
-        return $manager;
+        return new Manager($registry);
     }
 }

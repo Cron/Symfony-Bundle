@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Cron\CronBundle\Job;
 
@@ -8,8 +7,5 @@ use Cron\Job\ShellJob;
 
 class ShellJobWrapper extends ShellJob
 {
-    /**
-     * @var CronJob
-     */
-    public $raw;
+    public ?CronJob $raw = null;
 }
