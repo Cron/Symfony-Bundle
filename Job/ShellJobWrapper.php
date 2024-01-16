@@ -8,4 +8,10 @@ use Cron\Job\ShellJob;
 class ShellJobWrapper extends ShellJob
 {
     public ?CronJob $raw = null;
+
+    public function setCommand($command)
+    {
+        $commandArray = explode(' ', $command);
+        $this->process = new Process($commandArray);
+    }
 }
