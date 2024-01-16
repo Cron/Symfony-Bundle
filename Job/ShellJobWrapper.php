@@ -4,6 +4,7 @@ namespace Cron\CronBundle\Job;
 
 use Cron\CronBundle\Entity\CronJob;
 use Cron\Job\ShellJob;
+use Symfony\Component\Process\Process;
 
 class ShellJobWrapper extends ShellJob
 {
