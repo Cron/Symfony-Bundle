@@ -30,6 +30,6 @@ class CommandBuilder
 
     public function build(string $command, ?string $scriptName = null): string
     {
-        return sprintf('%s %s %s %s --env=%s', $this->phpExecutable, ' --define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit'), $scriptName ?? $_SERVER['SCRIPT_NAME'], $command, $this->environment);
+        return sprintf('%s %s %s %s --env=%s', $this->phpExecutable, '--define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit'), $scriptName ?? $_SERVER['SCRIPT_NAME'], $command, $this->environment);
     }
 }
