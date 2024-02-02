@@ -21,6 +21,7 @@ services:
     cron.executor:
         class: "%cron.executor.class%"
         public: true
+        shared: false
     cron.command_builder:
         class: "%cron.command_builder.class%"
         arguments: ["%kernel.environment%"]
