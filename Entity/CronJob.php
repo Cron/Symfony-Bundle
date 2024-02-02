@@ -1,67 +1,39 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Cron\CronBundle\Entity;
 
+use Cron\CronBundle\Repository\CronJobRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * CronJob
- *
- * @ORM\Table(name="cron_job", uniqueConstraints={@ORM\UniqueConstraint(name="un_name", columns={"name"})})
- * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronJobRepository")
- */
+#[ORM\Table('cron_job')]
+#[ORM\UniqueConstraint('un_name', ['name'])]
+#[ORM\Entity(CronJobRepository::class)]
 class CronJob
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column('id')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue('AUTO')]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=191)
-     */
-    private $name;
+    #[ORM\Column('name', length: 191)]
+    private ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="command", type="string", length=1024)
-     */
-    private $command;
+    #[ORM\Column('command', length: 1024)]
+    private ?string $command = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="schedule", type="string", length=191)
-     */
-    private $schedule;
+    #[ORM\Column('schedule', length: 191)]
+    private ?string $schedule = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=191)
-     */
-    private $description;
+    #[ORM\Column('description', length: 191)]
+    private ?string $description = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="enabled", type="boolean")
-     */
-    private $enabled;
+    #[ORM\Column('enabled')]
+    private ?bool $enabled = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="CronReport", mappedBy="job", cascade={"remove"})
-     * @var ArrayCollection
-     */
-    protected $reports;
+    #[ORM\OneToMany('job', CronReport::class, ['remove'])]
+    protected Collection $reports;
 
     public function __construct()
     {
@@ -70,21 +42,16 @@ class CronJob
 
     /**
      * Get id
-     *
-     * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * Set name
-     *
-     * @param  string  $name
-     * @return CronJob
      */
-    public function setName($name)
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -93,19 +60,16 @@ class CronJob
 
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $command
-     * @return CronJob
+     * Set command
      */
-    public function setCommand($command)
+    public function setCommand(?string $command): static
     {
         $this->command = $command;
 
@@ -113,18 +77,17 @@ class CronJob
     }
 
     /**
-     * @return string
+     * Get command
      */
-    public function getCommand()
+    public function getCommand(): ?string
     {
         return $this->command;
     }
 
     /**
-     * @param string $schedule
-     * @return CronJob
+     * Set schedule
      */
-    public function setSchedule($schedule)
+    public function setSchedule(?string $schedule): static
     {
         $this->schedule = $schedule;
 
@@ -132,20 +95,17 @@ class CronJob
     }
 
     /**
-     * @return string
+     * Get schedule
      */
-    public function getSchedule()
+    public function getSchedule(): ?string
     {
         return $this->schedule;
     }
 
     /**
      * Set description
-     *
-     * @param  string  $description
-     * @return CronJob
      */
-    public function setDescription($description)
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -154,21 +114,16 @@ class CronJob
 
     /**
      * Get description
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
      * Set enabled
-     *
-     * @param  boolean $enabled
-     * @return CronJob
      */
-    public function setEnabled($enabled)
+    public function setEnabled(?bool $enabled): static
     {
         $this->enabled = $enabled;
 
@@ -177,18 +132,13 @@ class CronJob
 
     /**
      * Get enabled
-     *
-     * @return boolean
      */
-    public function getEnabled()
+    public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getReports()
+    public function getReports(): Collection
     {
         return $this->reports;
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the CronSymfonyBundle package.
  *
@@ -16,20 +16,11 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class CommandBuilder
 {
-    /**
-     * @var string
-     */
-    private $environment;
+    private string $environment;
 
-    /**
-     * @var string
-     */
-    private $phpExecutable;
+    private string|false $phpExecutable;
 
-    /**
-     * @param string $environment
-     */
-    public function __construct($environment)
+    public function __construct(string $environment)
     {
         $this->environment = $environment;
 
@@ -37,13 +28,8 @@ class CommandBuilder
         $this->phpExecutable = $finder->find();
     }
 
-    /**
-     * @param string $command
-     *
-     * @return string
-     */
-    public function build($command, $scriptName = null)
+    public function build(string $command, ?string $scriptName = null): string
     {
-        return sprintf('%s %s %s %s --env=%s', $this->phpExecutable, ' --define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit'), $scriptName ?? $_SERVER['SCRIPT_NAME'], $command, $this->environment);
+        return sprintf('%s %s %s %s --env=%s', $this->phpExecutable, '--define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit'), $scriptName ?? $_SERVER['SCRIPT_NAME'], $command, $this->environment);
     }
 }

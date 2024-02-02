@@ -1,74 +1,50 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Cron\CronBundle\Entity;
 
+use Cron\CronBundle\Repository\CronReportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CronReport
- *
- * @ORM\Table(name="cron_report")
- * @ORM\Entity(repositoryClass="Cron\CronBundle\Entity\CronReportRepository")
- */
+#[ORM\Table('cron_report')]
+#[ORM\Entity(CronReportRepository::class)]
 class CronReport
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column('id')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue('AUTO')]
+    private ?int $id = null;
+
+    #[ORM\Column('run_at', 'datetime')]
+    protected ?\DateTime $runAt = null;
+
+    #[ORM\Column('run_time')]
+    protected ?float $runTime = null;
+
+    #[ORM\Column('exit_code')]
+    protected ?int $exitCode = null;
+
+    #[ORM\Column('output', 'text')]
+    protected ?string $output = null;
+
+    #[ORM\Column('error', 'text')]
+    protected ?string $error = null;
+
+    #[ORM\ManyToOne(CronJob::class, inversedBy: 'reports')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    protected ?CronJob $job = null;
 
     /**
-     * @ORM\Column(name="run_at", type="datetime")
-     * @var \DateTime $runAt
+     * Get id
      */
-    protected $runAt;
-    /**
-     * @ORM\Column(name="run_time", type="float")
-     * @var float $runTime
-     */
-    protected $runTime;
-
-    /**
-     * @ORM\Column(name="exit_code", type="integer")
-     * @var integer $result
-     */
-    protected $exitCode;
-    /**
-     * @ORM\Column(type="text")
-     * @var string $output
-     */
-    protected $output;
-
-    /**
-     * @ORM\Column(type="text")
-     * @var string $error
-     */
-    protected $error;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CronJob", inversedBy="reports")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     * @var CronJob
-     */
-    protected $job;
-
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @param CronJob $job
-     * @return CronReport
+     * Set job
      */
-    public function setJob($job)
+    public function setJob(?CronJob $job): static
     {
         $this->job = $job;
 
@@ -76,18 +52,17 @@ class CronReport
     }
 
     /**
-     * @return CronJob
+     * Get job
      */
-    public function getJob()
+    public function getJob(): ?CronJob
     {
         return $this->job;
     }
 
     /**
-     * @param string $output
-     * @return CronReport
+     * Set output
      */
-    public function setOutput($output)
+    public function setOutput(?string $output): static
     {
         $this->output = $output;
 
@@ -95,18 +70,17 @@ class CronReport
     }
 
     /**
-     * @return string
+     * Get output
      */
-    public function getOutput()
+    public function getOutput(): ?string
     {
         return $this->output;
     }
 
     /**
-     * @param string $error
-     * @return CronReport
+     * Set error
      */
-    public function setError($error)
+    public function setError(?string $error): static
     {
         $this->error = $error;
 
@@ -114,18 +88,17 @@ class CronReport
     }
 
     /**
-     * @return string
+     * Get error
      */
-    public function getError()
+    public function getError(): ?string
     {
         return $this->error;
     }
 
     /**
-     * @param int $exitCode
-     * @return CronReport
+     * Set exit code
      */
-    public function setExitCode($exitCode)
+    public function setExitCode(?int $exitCode): static
     {
         $this->exitCode = $exitCode;
 
@@ -133,18 +106,17 @@ class CronReport
     }
 
     /**
-     * @return int
+     * Get exit code
      */
-    public function getExitCode()
+    public function getExitCode(): ?int
     {
         return $this->exitCode;
     }
 
     /**
-     * @param \DateTime $runAt
-     * @return CronReport
+     * Set run at
      */
-    public function setRunAt($runAt)
+    public function setRunAt(?\DateTime $runAt): static
     {
         $this->runAt = $runAt;
 
@@ -152,18 +124,17 @@ class CronReport
     }
 
     /**
-     * @return \DateTime
+     * Get run at
      */
-    public function getRunAt()
+    public function getRunAt(): ?\DateTime
     {
         return $this->runAt;
     }
 
     /**
-     * @param float $runTime
-     * @return CronReport
+     * Set run time
      */
-    public function setRunTime($runTime)
+    public function setRunTime(?float $runTime): static
     {
         $this->runTime = $runTime;
 
@@ -171,9 +142,9 @@ class CronReport
     }
 
     /**
-     * @return float
+     * Get run time
      */
-    public function getRunTime()
+    public function getRunTime(): ?float
     {
         return $this->runTime;
     }

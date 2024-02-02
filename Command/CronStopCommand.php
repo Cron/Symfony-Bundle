@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the SymfonyCronBundle package.
  *
@@ -11,6 +11,7 @@
 namespace Cron\CronBundle\Command;
 
 use Cron\CronBundle\Cron\CronCommand;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,20 +23,13 @@ class CronStopCommand extends CronCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cron:stop')
             ->setDescription('Stops cron scheduler');
     }
 
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.CronStartCommand::PID_FILE;
         if (!file_exists($pidFile)) {
@@ -43,12 +37,12 @@ class CronStopCommand extends CronCommand
         }
 
         if (!extension_loaded('pcntl')) {
-            throw new \RuntimeException('This command needs the pcntl extension to run.');
+            throw new RuntimeException('This command needs the pcntl extension to run.');
         }
 
-        if (!posix_kill(file_get_contents($pidFile), SIGINT)) {
+        if (!posix_kill((int) file_get_contents($pidFile), SIGINT)) {
             if (!unlink($pidFile)) {
-                throw new \RuntimeException('Unable to stop scheduler.');
+                throw new RuntimeException('Unable to stop scheduler.');
             }
 
             $output->writeln(sprintf('<comment>%s</comment>', 'Unable to kill cron scheduler process. Scheduler will be stopped before the next run.'));
