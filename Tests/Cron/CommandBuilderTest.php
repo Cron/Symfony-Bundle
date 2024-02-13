@@ -22,7 +22,7 @@ class CommandBuilderTest extends WebTestCase
         $env = rand();
         $builder = new CommandBuilder((string) $env);
 
-        $this->assertRegExp(sprintf('/--env=%s$/', $env), $builder->build(''));
+        $this->assertMatchesRegularExpression(sprintf('/--env=%s$/', $env), $builder->build(''));
     }
 
     public function testEnv()
@@ -31,6 +31,6 @@ class CommandBuilderTest extends WebTestCase
         $kernel->boot();
         $builder = $kernel->getContainer()->get('cron.command_builder');
 
-        $this->assertRegExp(sprintf('/ --env=%s$/', 'test'), $builder->build(''));
+        $this->assertMatchesRegularExpression(sprintf('/ --env=%s$/', 'test'), $builder->build(''));
     }
 }
