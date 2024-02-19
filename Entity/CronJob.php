@@ -32,7 +32,7 @@ class CronJob
     #[ORM\Column('enabled')]
     private ?bool $enabled = null;
 
-    #[ORM\OneToMany(CronReport::class, 'job', ['remove'])]
+    #[ORM\OneToMany(targetEntity: CronReport::class, mappedBy: 'job', cascade: ['remove'])]
     protected Collection $reports;
 
     public function __construct()
