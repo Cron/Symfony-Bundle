@@ -42,8 +42,8 @@
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "*",
+        "monolog/monolog": "*",
         "phpunit/phpunit": "^10",
-        "symfony/framework-bundle": "^5.0|^6.0|^7.0",
         "symfony/security-csrf": "^5.0|^6.0|^7.0",
         "symfony/translation": "^5.0|^6.0|^7.0",
         "symfony/yaml": "^5.0|^6.0|^7.0"
