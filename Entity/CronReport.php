@@ -29,7 +29,7 @@ class CronReport
     #[ORM\Column('error', 'text')]
     protected ?string $error = null;
 
-    #[ORM\ManyToOne(CronJob::class, inversedBy: 'reports')]
+    #[ORM\ManyToOne(targetEntity: CronJob::class, inversedBy: 'reports')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     protected ?CronJob $job = null;
 
