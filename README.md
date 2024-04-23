@@ -2,10 +2,10 @@ Cron Bundle
 ===========
 
  [![Packagist](https://img.shields.io/packagist/v/cron/cron-bundle.svg?style=flat-square)](https://packagist.org/packages/cron/cron-bundle)
- [![Build Status](https://img.shields.io/travis/Cron/Symfony-Bundle.svg?style=flat-square)](https://travis-ci.org/Cron/Symfony-Bundle)
+ [![Build status](https://img.shields.io/github/actions/workflow/status/cron/symfony-bundle/ci.yaml?style=flat-square)](https://github.com/cron/symfony-bundle/actions/workflows/ci.yml)
  [![Packagist](https://img.shields.io/packagist/dt/Cron/Cron-Bundle.svg?style=flat-square)](https://packagist.org/packages/cron/cron-bundle)
  [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
- 
+
 [Cron](https://github.com/Cron/Cron) integration for symfony.
 
 Installation
@@ -94,9 +94,9 @@ Disable a job.
 ```shell
 bin/console cron:run [--force] [job]
 ```
-> which we borrowed from Symfony. 
-> Make sure to check out [php-cs-fixer](https://github.com/fabpot/PHP-CS-Fixer) as this will help you a lot.  
-> Please note that `--force` forces the job to be executed (even if disabled) based on the job schedule  
+> which we borrowed from Symfony.
+> Make sure to check out [php-cs-fixer](https://github.com/fabpot/PHP-CS-Fixer) as this will help you a lot.
+> Please note that `--force` forces the job to be executed (even if disabled) based on the job schedule
 
 ### run now, independent of the job schedule
 ```shell
