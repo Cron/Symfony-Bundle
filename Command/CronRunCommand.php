@@ -11,6 +11,7 @@ namespace Cron\CronBundle\Command;
 
 use Cron\Cron;
 use Cron\CronBundle\Cron\CronCommand;
+use Cron\CronBundle\Cron\LockedExecutor;
 use Cron\CronBundle\Entity\CronJob;
 use Cron\CronBundle\Job\ShellJobWrapper;
 use Cron\Resolver\ArrayResolver;
@@ -19,6 +20,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -42,7 +45,7 @@ class CronRunCommand extends CronCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $cron = new Cron();
-        $cron->setExecutor($this->getContainer()->get('cron.executor'));
+        $cron->setExecutor($this->createLockedExecutor());
         if ($input->getArgument('job')) {
             $resolver = $this->getJobResolver($input->getArgument('job'), $input->getParameterOption('--force') !== false, $input->getParameterOption('--schedule_now') !== false);
         } else {
@@ -68,6 +71,22 @@ class CronRunCommand extends CronCommand
         $manager->saveReports($dbReport->getReports());
 
         return 0;
+    }
+
+    /**
+     * Creates a job executor with locking mechanism
+     */
+    protected function createLockedExecutor(): \Cron\Executor\Executor
+    {
+        // Use the default executor with our custom locking wrapper
+        $executor = new LockedExecutor();
+        
+        // Create lock factory using filesystem locks
+        $lockStore = new FlockStore(sys_get_temp_dir());
+        $lockFactory = new LockFactory($lockStore);
+        $executor->setLockFactory($lockFactory);
+        
+        return $executor;
     }
 
     /**
