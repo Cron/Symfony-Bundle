@@ -93,7 +93,7 @@ class CronRunCommand extends CronCommand
         $resolver = new ArrayResolver();
 
         $job = new ShellJobWrapper();
-        $job->setCommand(escapeshellarg($phpExecutable) . ' --define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit').' ' . $rootDir . '/bin/console ' . $dbJob->getCommand());
+        $job->setCommand(escapeshellcmd($phpExecutable) . ' --define max_execution_time='.ini_get('max_execution_time').' --define memory_limit='.ini_get('memory_limit').' ' . $rootDir . '/bin/console ' . $dbJob->getCommand());
         $job->setSchedule(new CrontabSchedule($pattern));
         $job->raw = $dbJob;
 
