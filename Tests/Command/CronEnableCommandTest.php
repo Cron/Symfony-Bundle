@@ -86,7 +86,7 @@ class CronEnableCommandTest extends WebTestCase
         $kernel->getContainer()->set('cron.manager', $manager);
 
         $application = new Application($kernel);
-        $application->add(new CronEnableCommand($kernel->getContainer()));
+        $application->addCommand(new CronEnableCommand($kernel->getContainer()));
 
         return $application->find('cron:enable');
     }

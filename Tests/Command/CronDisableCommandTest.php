@@ -86,7 +86,7 @@ class CronDisableCommandTest extends WebTestCase
         $kernel->getContainer()->set('cron.manager', $manager);
 
         $application = new Application($kernel);
-        $application->add(new CronDisableCommand($kernel->getContainer()));
+        $application->addCommand(new CronDisableCommand($kernel->getContainer()));
 
         return $application->find('cron:disable');
     }

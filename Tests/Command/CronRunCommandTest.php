@@ -107,7 +107,7 @@ class CronRunCommandTest extends WebTestCase
         $kernel->getContainer()->set('cron.resolver', $resolver);
 
         $application = new Application($kernel);
-        $application->add(new CronRunCommand($kernel->getContainer()));
+        $application->addCommand(new CronRunCommand($kernel->getContainer()));
 
         return $application->find('cron:run');
     }
