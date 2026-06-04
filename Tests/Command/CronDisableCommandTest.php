@@ -11,6 +11,7 @@
 namespace Cron\CronBundle\Tests\Command;
 
 use Cron\CronBundle\Command\CronDisableCommand;
+use Cron\CronBundle\Command\CronEnableCommand;
 use Cron\CronBundle\Cron\Manager;
 use Cron\CronBundle\Entity\CronJob;
 use InvalidArgumentException;
@@ -86,7 +87,12 @@ class CronDisableCommandTest extends WebTestCase
         $kernel->getContainer()->set('cron.manager', $manager);
 
         $application = new Application($kernel);
-        $application->addCommand(new CronDisableCommand($kernel->getContainer()));
+
+        if (method_exists($application, 'addCommand')) {
+            $application->addCommand(new CronEnableCommand($kernel->getContainer()));
+        } else {
+            $application->add(new CronEnableCommand($kernel->getContainer()));
+        }
 
         return $application->find('cron:disable');
     }
