@@ -10,7 +10,6 @@
 
 namespace Cron\CronBundle\Tests\Command;
 
-use Cron\CronBundle\Command\CronEnableCommand;
 use Cron\CronBundle\Command\CronRunCommand;
 use Cron\CronBundle\Cron\Manager;
 use Cron\CronBundle\Cron\Resolver;
@@ -110,9 +109,9 @@ class CronRunCommandTest extends WebTestCase
         $application = new Application($kernel);
 
         if (method_exists($application, 'addCommand')) {
-            $application->addCommand(new CronEnableCommand($kernel->getContainer()));
+            $application->addCommand(new CronRunCommand($kernel->getContainer()));
         } else {
-            $application->add(new CronEnableCommand($kernel->getContainer()));
+            $application->add(new CronRunCommand($kernel->getContainer()));
         }
 
         return $application->find('cron:run');
