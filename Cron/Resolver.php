@@ -52,7 +52,7 @@ class Resolver implements ResolverInterface
     }
 
     /**
-     * Transform a CronJon into a ShellJob.
+     * Transform a CronJob into a ShellJob.
      */
     protected function createJob(CronJob $dbJob): ShellJob
     {
