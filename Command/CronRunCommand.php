@@ -35,10 +35,10 @@ class CronRunCommand extends CronCommand
     protected function configure(): void
     {
         $this->setName('cron:run')
-            ->setDescription('Runs any currently schedule cron jobs')
+            ->setDescription('Runs any currently scheduled cron jobs')
             ->addArgument('job', InputArgument::OPTIONAL, 'Run only this job (if enabled)')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force schedule the current job.')
-            ->addOption('schedule_now', null, InputOption::VALUE_NONE, 'Temporary set the job schedule to now.')
+            ->addOption('schedule_now', null, InputOption::VALUE_NONE, 'Temporarily set the job schedule to now.')
             ->addOption('script-name', null, InputOption::VALUE_OPTIONAL, 'Specify this to avoid guessing the script name to run the command in non-CLI context.');
     }
 
