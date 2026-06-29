@@ -19,6 +19,8 @@ jobs:
                     - '8.1'
                     - '8.2'
                     - '8.3'
+                    - '8.4'
+                    - '8.5'
                 symfony-versions: [false]
                 include:
                     -   description: 'Symfony 5.*'
@@ -30,6 +32,9 @@ jobs:
                     -   description: 'Symfony 7.*'
                         php: '8.2'
                         symfony-versions: '^7.0'
+                    -   description: 'Symfony 8.*'
+                        php: '8.4'
+                        symfony-versions: '^8.0'
         name: PHP ${{ matrix.php }} ${{ matrix.description }}
         steps:
             - name: Checkout

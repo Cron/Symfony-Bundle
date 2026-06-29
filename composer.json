@@ -18,12 +18,12 @@
         "doctrine/dbal": "*",
         "doctrine/orm": ">=2.4.5",
         "doctrine/persistence": "*",
-        "symfony/config": "^5.0|^6.0|^7.0",
-        "symfony/console": "^5.0|^6.0|^7.0",
-        "symfony/dependency-injection": "^5.0|^6.0|^7.0",
-        "symfony/http-kernel": "^5.0|^6.0|^7.0",
-        "symfony/process": "^5.0|^6.0|^7.0",
-        "symfony/lock": "^5.0|^6.0|^7.0"
+        "symfony/config": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/console": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/dependency-injection": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/http-kernel": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/process": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/lock": "^5.0|^6.0|^7.0|^8.0"
     },
     "autoload": {
         "psr-4" : {
@@ -45,8 +45,8 @@
         "doctrine/doctrine-bundle": "*",
         "monolog/monolog": "*",
         "phpunit/phpunit": "^10",
-        "symfony/security-csrf": "^5.0|^6.0|^7.0",
-        "symfony/translation": "^5.0|^6.0|^7.0",
-        "symfony/yaml": "^5.0|^6.0|^7.0"
+        "symfony/security-csrf": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/translation": "^5.0|^6.0|^7.0|^8.0",
+        "symfony/yaml": "^5.0|^6.0|^7.0|^8.0"
     }
 }
